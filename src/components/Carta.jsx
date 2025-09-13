@@ -68,8 +68,8 @@ const Carta = ({ carta, index, jugador, anchoCarta = 120 }) => {
           borderRadius: '8px',
           boxShadow: '0 4px 8px rgba(0,0,0,0.3)',
           backgroundImage: carta.isAbierta() 
-            ? `url(/images/cartas/${carta.getImagenNombre()}.png)`
-            : `url(/images/cartas/cartacubierta.png)`,
+            ? `url(/blackjack-web/images/cartas/${carta.getImagenNombre()}.png)`
+            : `url(/blackjack-web/images/cartas/cartacubierta.png)`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat'

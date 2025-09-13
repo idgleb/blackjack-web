@@ -4,11 +4,11 @@ import soundManager from '../utils/soundManager';
 
 const Ficha = ({ valor, tipo, index, enApuesta = true }) => {
   const fichaImages = {
-    10: '/images/fichas/f10.png',
-    25: '/images/fichas/f25.png',
-    50: '/images/fichas/f50.png',
-    100: '/images/fichas/f100.png',
-    500: '/images/fichas/f500.png'
+    10: '/blackjack-web/images/fichas/f10.png',
+    25: '/blackjack-web/images/fichas/f25.png',
+    50: '/blackjack-web/images/fichas/f50.png',
+    100: '/blackjack-web/images/fichas/f100.png',
+    500: '/blackjack-web/images/fichas/f500.png'
   };
 
   const alturaFicha = window.innerWidth <= window.innerHeight 

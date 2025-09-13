@@ -4,11 +4,11 @@ import soundManager from '../utils/soundManager';
 
 const BotonesApuesta = ({ onApostar, visible = true }) => {
   const fichas = [
-    { valor: 10, imagen: '/images/fichas/f10.png' },
-    { valor: 25, imagen: '/images/fichas/f25.png' },
-    { valor: 50, imagen: '/images/fichas/f50.png' },
-    { valor: 100, imagen: '/images/fichas/f100.png' },
-    { valor: 500, imagen: '/images/fichas/f500.png' }
+    { valor: 10, imagen: '/blackjack-web/images/fichas/f10.png' },
+    { valor: 25, imagen: '/blackjack-web/images/fichas/f25.png' },
+    { valor: 50, imagen: '/blackjack-web/images/fichas/f50.png' },
+    { valor: 100, imagen: '/blackjack-web/images/fichas/f100.png' },
+    { valor: 500, imagen: '/blackjack-web/images/fichas/f500.png' }
   ];
 
   const handleClick = (valor) => {

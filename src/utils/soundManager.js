@@ -13,27 +13,27 @@ class SoundManager {
 
     // Música de fondo
     this.musicaFondo = new Howl({
-      src: ['/sounds/jazzfondo.mp3'],
+      src: ['/blackjack-web/sounds/jazzfondo.mp3'],
       loop: true,
       volume: 0.2
     });
 
     // Efectos de sonido (soporta mp3 y m4a)
     this.sounds = {
-      tupierdes: new Howl({ src: ['/sounds/tupierdes.m4a', '/sounds/tupierdes.mp3'] }),
-      tuganas: new Howl({ src: ['/sounds/tuganas.m4a', '/sounds/tuganas.mp3'] }),
-      sacarfichas: new Howl({ src: ['/sounds/sacarfichas.mp3'] }),
-      pop: new Howl({ src: ['/sounds/pop.mp3'] }),
-      pierdes2: new Howl({ src: ['/sounds/pierdes2.mp3'] }),
-      nuevabarajavoz: new Howl({ src: ['/sounds/nuevabarajavoz.m4a', '/sounds/nuevabarajavoz.mp3'] }),
-      nuevabaraja2: new Howl({ src: ['/sounds/nuevabaraja2.mp3'] }),
-      ganasfichas2: new Howl({ src: ['/sounds/ganasfichas2.mp3'] }),
-      ganasfichas: new Howl({ src: ['/sounds/ganasfichas.mp3'] }),
-      flotar: new Howl({ src: ['/sounds/flotar.mp3'] }),
-      empate: new Howl({ src: ['/sounds/empate.m4a', '/sounds/empate.mp3'] }),
-      blackjack: new Howl({ src: ['/sounds/blackjack.m4a', '/sounds/blackjack.mp3'] }),
-      apostar: new Howl({ src: ['/sounds/apostar.mp3'] }),
-      abrir: new Howl({ src: ['/sounds/abrir.mp3'] })
+      tupierdes: new Howl({ src: ['/blackjack-web/sounds/tupierdes.m4a', '/blackjack-web/sounds/tupierdes.mp3'] }),
+      tuganas: new Howl({ src: ['/blackjack-web/sounds/tuganas.m4a', '/blackjack-web/sounds/tuganas.mp3'] }),
+      sacarfichas: new Howl({ src: ['/blackjack-web/sounds/sacarfichas.mp3'] }),
+      pop: new Howl({ src: ['/blackjack-web/sounds/pop.mp3'] }),
+      pierdes2: new Howl({ src: ['/blackjack-web/sounds/pierdes2.mp3'] }),
+      nuevabarajavoz: new Howl({ src: ['/blackjack-web/sounds/nuevabarajavoz.m4a', '/blackjack-web/sounds/nuevabarajavoz.mp3'] }),
+      nuevabaraja2: new Howl({ src: ['/blackjack-web/sounds/nuevabaraja2.mp3'] }),
+      ganasfichas2: new Howl({ src: ['/blackjack-web/sounds/ganasfichas2.mp3'] }),
+      ganasfichas: new Howl({ src: ['/blackjack-web/sounds/ganasfichas.mp3'] }),
+      flotar: new Howl({ src: ['/blackjack-web/sounds/flotar.mp3'] }),
+      empate: new Howl({ src: ['/blackjack-web/sounds/empate.m4a', '/blackjack-web/sounds/empate.mp3'] }),
+      blackjack: new Howl({ src: ['/blackjack-web/sounds/blackjack.m4a', '/blackjack-web/sounds/blackjack.mp3'] }),
+      apostar: new Howl({ src: ['/blackjack-web/sounds/apostar.mp3'] }),
+      abrir: new Howl({ src: ['/blackjack-web/sounds/abrir.mp3'] })
     };
 
     this.initialized = true;
