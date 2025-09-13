@@ -7,6 +7,7 @@ Una implementación completa del juego de Blackjack (21) en React, convertida de
 ![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-yellow)
 ![License](https://img.shields.io/badge/License-MIT-green)
 ![Original App](https://img.shields.io/badge/Original-Android%20App-orange)
+![Live Demo](https://img.shields.io/badge/Live%20Demo-GitHub%20Pages-brightgreen)
 
 
 
@@ -77,6 +78,41 @@ npm run dev
 ```
 http://localhost:5173
 ```
+
+## 🌐 Despliegue a GitHub Pages
+
+### **Opción 1: Automático (Recomendado)**
+
+El proyecto se despliega automáticamente cuando haces push a la rama `main`:
+
+1. **Hacer commit y push:**
+```bash
+git add .
+git commit -m "Deploy to GitHub Pages"
+git push origin main
+```
+
+2. **Habilitar GitHub Pages:**
+   - Ve a tu repositorio en GitHub
+   - Settings → Pages
+   - Source: "GitHub Actions"
+   - El despliegue comenzará automáticamente
+
+3. **Tu juego estará disponible en:**
+   ```
+   https://idgleb.github.io/blackjack-web/
+   ```
+
+### **Opción 2: Manual**
+
+```bash
+npm run deploy
+```
+
+### **Verificar despliegue:**
+- Ve a la pestaña "Actions" en tu repositorio GitHub
+- Verifica que el workflow "Deploy to GitHub Pages" se ejecute correctamente
+- Tu juego estará disponible en unos minutos
 
 ## 🎮 Cómo Jugar
 
