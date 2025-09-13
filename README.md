@@ -2,12 +2,16 @@
 
 Una implementación completa del juego de Blackjack (21) en React, convertida desde el proyecto Android/Kotlin original **"Black jack Argentina"** desarrollado por [Gleb Ursol](https://play.google.com/store/apps/details?id=com.ursolgleb.blackjacknoactivity). Incluye persistencia de datos, animaciones fluidas y diseño responsive.
 
+## 🎮 **¡Juega Ahora!**
+**[🎯 JUGAR BLACKJACK EN VIVO](https://idgleb.github.io/blackjack-web/)**
+
 ![Blackjack Game](https://img.shields.io/badge/Game-Blackjack-green)
 ![React](https://img.shields.io/badge/React-18.2.0-blue)
 ![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-yellow)
 ![License](https://img.shields.io/badge/License-MIT-green)
 ![Original App](https://img.shields.io/badge/Original-Android%20App-orange)
 ![Live Demo](https://img.shields.io/badge/Live%20Demo-GitHub%20Pages-brightgreen)
+[![Play Now](https://img.shields.io/badge/🎮%20PLAY%20NOW-Blackjack%20Live-orange)](https://idgleb.github.io/blackjack-web/)
 
 
 
@@ -113,6 +117,9 @@ npm run deploy
 - Ve a la pestaña "Actions" en tu repositorio GitHub
 - Verifica que el workflow "Deploy to GitHub Pages" se ejecute correctamente
 - Tu juego estará disponible en unos minutos
+
+### **🎮 ¡Tu juego ya está en vivo!**
+**[🎯 JUGAR BLACKJACK AHORA](https://idgleb.github.io/blackjack-web/)**
 
 ## 🎮 Cómo Jugar
 
@@ -280,9 +287,10 @@ Este proyecto está bajo la Licencia MIT. Ver el archivo [LICENSE](LICENSE) para
 
 ### 🔗 Enlaces Relacionados
 
+- 🎮 **[🎯 JUGAR AHORA](https://idgleb.github.io/blackjack-web/)** - ¡Juega Blackjack en vivo!
 - 📱 **[App Original Android](https://play.google.com/store/apps/details?id=com.ursolgleb.blackjacknoactivity)** - "Black jack Argentina" en Google Play Store
 - 🏠 **[Repositorio Kotlin](https://github.com/idgleb/blackjack)** - Código fuente original en Android/Kotlin
-- 🌐 **[Versión Web](https://github.com/idgleb/blackjack-web)** - Esta implementación en React
+- 🌐 **[Repositorio Web](https://github.com/idgleb/blackjack-web)** - Esta implementación en React
 
 ---
 
