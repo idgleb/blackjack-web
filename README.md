@@ -8,6 +8,15 @@ Una implementación completa del juego de Blackjack (21) en React, convertida de
 ![License](https://img.shields.io/badge/License-MIT-green)
 ![Original App](https://img.shields.io/badge/Original-Android%20App-orange)
 
+
+
+<div style="display: flex;" align="center">
+    <img src="https://github.com/user-attachments/assets/66ab3a11-ffaf-4b08-81a1-5301bfe05b68" style="width: 70%;"/>
+  <img src="https://github.com/user-attachments/assets/e1adc97f-87ed-4852-8e8d-66516a553c5f" style="width: 25%;" />
+ 
+</div>
+
+
 ## ✨ Características
 
 - 🎮 **Juego completo de Blackjack** con reglas estándar del casino
