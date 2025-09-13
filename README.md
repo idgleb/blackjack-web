@@ -10,7 +10,7 @@ Una implementación completa del juego de Blackjack (21) en React, convertida de
 ![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-yellow)
 ![License](https://img.shields.io/badge/License-MIT-green)
 ![Original App](https://img.shields.io/badge/Original-Android%20App-orange)
-![Live Demo](https://img.shields.io/badge/Live%20Demo-GitHub%20Pages-brightgreen)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-GitHub%20Pages-brightgreen)](https://idgleb.github.io/blackjack-web/)
 [![Play Now](https://img.shields.io/badge/🎮%20PLAY%20NOW-Blackjack%20Live-orange)](https://idgleb.github.io/blackjack-web/)
 
 
