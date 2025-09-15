@@ -32,7 +32,7 @@ Una implementación completa del juego de Blackjack (21) en React, convertida de
 
 ## 🚀 Demo
 
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-Play%20Now-green?style=for-the-badge)](https://tu-demo-url.com)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Play%20Now-green?style=for-the-badge)](https://idgleb.github.io/blackjack-web/)
 
 ## 🛠️ Tecnologías
 
@@ -261,7 +261,7 @@ npm run lint         # Verificar código
 
 ¿Encontraste un bug? Por favor:
 
-1. Verifica que no esté ya reportado en [Issues](../../issues)
+1. Verifica que no esté ya reportado en [Issues](https://github.com/idgleb/blackjack-web/issues)
 2. Crea un nuevo issue con:
    - Descripción detallada
    - Pasos para reproducir
