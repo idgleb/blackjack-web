@@ -47,7 +47,9 @@ const InfoJuego = ({
           position: 'absolute',
           bottom: '200px',
           left: '50%',
-          transform: 'translateX(-50%)'
+          transform: 'translateX(-50%)',
+          fontSize: window.innerWidth < 700 ? '14px' : '18px',
+          padding: window.innerWidth < 700 ? '6px 12px' : '10px 20px'
         }}
       >
         $ {apuesta.toFixed(2)}
@@ -77,10 +79,8 @@ const InfoJuego = ({
             style={{
               ...infoStyle,
               position: 'absolute',
-              bottom: (window.innerWidth < 700 && window.innerWidth > window.innerHeight) 
-                ? '200px'  // Landscape móvil: más abajo
-                : '300px', // Portrait o desktop: posición normal
-              left: '20px',
+              bottom: '40vh',
+              left: '10vw',
               backgroundColor: 'rgba(67, 21, 0, 0.8)',
               fontSize: window.innerWidth < 700 ? '18px' : '24px'
             }}
@@ -101,7 +101,7 @@ const InfoJuego = ({
               ...infoStyle,
               position: 'absolute',
               top: '150px',
-              left: '20px',
+              left: '10vw',
               backgroundColor: 'rgba(67, 21, 0, 0.8)',
               fontSize: window.innerWidth < 700 ? '18px' : '24px'
             }}

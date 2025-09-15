@@ -42,15 +42,15 @@ export class Jugador {
     let coordX, coordY;
     
     if (!this.isCrupier) {
-      // Posición para el jugador (abajo)
-      coordX = 100 + (indice * anchoCarta * 0.4);
-      coordY = window.innerHeight - 300 - (indice * 30);
+      // Posición para el jugador (abajo) - 30% de la altura de la pantalla
+      coordX = window.innerWidth * 0.20 + (indice * anchoCarta * 0.4);
+      coordY = window.innerHeight * 0.6 - (indice * 30);
     } else {
       // Posición para el crupier (arriba)
       if (indice === 0) {
-        coordX = 200;
+        coordX = window.innerWidth * 0.25;
       } else {
-        coordX = 200 + (indice * anchoCarta * 0.4);
+        coordX = window.innerWidth * 0.25 + (indice * anchoCarta * 0.4);
       }
       coordY = 100;
     }
