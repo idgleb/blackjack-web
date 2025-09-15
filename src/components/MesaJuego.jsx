@@ -186,10 +186,11 @@ const MesaJuego = () => {
   return (
     <div style={{
       width: '100vw',
-      height: '100vh',
+      height: '100dvh', // Dynamic viewport height for mobile
       background: 'radial-gradient(ellipse at center, #1a3d1a 0%, #0a1a0a 100%)',
       position: 'relative',
-      overflow: 'hidden'
+      overflow: 'hidden',
+      paddingBottom: 'env(safe-area-inset-bottom, 20px)' // Safe area for mobile
     }}>
       {/* Imagen ursol.png */}
       <div style={{

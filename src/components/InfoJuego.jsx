@@ -28,7 +28,9 @@ const InfoJuego = ({
         style={{
           ...infoStyle,
           position: 'absolute',
-          bottom: window.innerWidth < 700 ? '100px' : '20px',
+          bottom: window.innerWidth < 700 
+            ? 'max(100px, env(safe-area-inset-bottom, 20px) + 80px)' 
+            : 'max(20px, env(safe-area-inset-bottom, 20px) + 20px)',
           left: window.innerWidth < 700 ? '50%' : '20px',
           transform: window.innerWidth < 700 ? 'translateX(-50%)' : 'none',
           fontSize: window.innerWidth < 700 ? '12px' : '16px',

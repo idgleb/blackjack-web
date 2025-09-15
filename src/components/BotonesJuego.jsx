@@ -32,7 +32,9 @@ const BotonesJuego = ({
   return (
     <div style={{
       position: 'absolute',
-      bottom: isMobile ? '150px' : '100px',
+      bottom: isMobile 
+        ? 'max(150px, env(safe-area-inset-bottom, 20px) + 130px)' 
+        : 'max(100px, env(safe-area-inset-bottom, 20px) + 80px)',
       left: '50%',
       transform: 'translateX(-50%)',
       display: 'flex',

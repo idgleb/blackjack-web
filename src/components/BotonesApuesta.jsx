@@ -27,7 +27,7 @@ const BotonesApuesta = ({ onApostar, visible = true }) => {
       style={{
         position: 'absolute',
         left: '50%',
-        bottom: '20px',
+        bottom: 'max(20px, env(safe-area-inset-bottom, 20px) + 20px)', // Safe area + extra padding
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
