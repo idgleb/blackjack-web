@@ -244,13 +244,20 @@ const useGameStore = create((set, get) => ({
     
     set({ 
       jugador1: jugador1,
-      crupier: crupier,
-      isRepartirPrincipal: false
+      crupier: crupier
     });
     get().guardarEstado();
     
     // Verificar blackjack
-    return get().verificarBlackjack();
+    const hayBlackjack = get().verificarBlackjack();
+    
+    // Solo resetear isRepartirPrincipal si no hay blackjack
+    if (!hayBlackjack) {
+      set({ isRepartirPrincipal: false });
+      get().guardarEstado();
+    }
+    
+    return hayBlackjack;
   },
   
   // Pedir carta
@@ -271,16 +278,19 @@ const useGameStore = create((set, get) => ({
       // Esperar para la animación de la carta
       await new Promise(resolve => setTimeout(resolve, 500));
       
-      set({ isMas: false });
-      get().guardarEstado();
-      
       // Verificar si se pasó de 21
       if (jugador1.sumaPuntos() > 21) {
+        // No cambiar isMas a false aquí - mantenerlo hasta que finalizarJuego lo maneje
         get().finalizarJuego(0, `Pierdes -$${jugador1.apuestoJugador}`);
         return false;
       } else if (jugador1.sumaPuntos() === 21) {
+        set({ isMas: false });
+        get().guardarEstado();
         get().turnoCrupier();
         return false;
+      } else {
+        set({ isMas: false });
+        get().guardarEstado();
       }
     }
     return true;
@@ -316,11 +326,11 @@ const useGameStore = create((set, get) => ({
         // Esperar para la animación
         await new Promise(resolve => setTimeout(resolve, 500));
         
-        set({ isDoblar: false });
-        
         if (jugador1.sumaPuntos() > 21) {
+          // No cambiar isDoblar a false aquí - mantenerlo hasta que finalizarJuego lo maneje
           get().finalizarJuego(0, `Pierdes -$${jugador1.apuestoJugador}`);
         } else {
+          set({ isDoblar: false });
           get().turnoCrupier();
         }
       }
