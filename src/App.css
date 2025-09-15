@@ -115,11 +115,37 @@ button:disabled {
   }
 }
 
+/* Soporte para visualViewport en móviles */
+@supports (height: 100dvh) {
+  .App {
+    height: 100dvh; /* Dynamic viewport height */
+  }
+}
+
+/* Ajustes específicos para navegadores móviles */
+@supports (height: 100svh) {
+  .App {
+    height: 100svh; /* Small viewport height */
+  }
+}
+
+/* Prevenir zoom en inputs en iOS */
+input, textarea, select {
+  font-size: 16px;
+}
+
 /* Media queries para responsividad */
 @media (max-width: 768px) {
   button {
     font-size: 14px;
     padding: 8px 16px;
+  }
+  
+  /* Asegurar que el viewport sea correcto en móviles */
+  html, body {
+    height: 100%;
+    height: 100dvh;
+    overflow: hidden;
   }
 }
 

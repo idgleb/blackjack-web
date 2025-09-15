@@ -5,27 +5,71 @@ import { useState, useEffect } from 'react';
  * Calcula tamaños y posiciones basados en las dimensiones de la pantalla
  */
 export const useResponsive = () => {
-  const [dimensions, setDimensions] = useState({
-    width: window.innerWidth,
-    height: window.innerHeight,
-    isMobile: window.innerWidth < 700,
-    isSmallMobile: window.innerWidth < 500,
-    isLandscape: window.innerWidth > window.innerHeight
+  // Función para obtener dimensiones reales del viewport
+  const getRealViewport = () => {
+    // En móviles, usar visualViewport si está disponible (área visible real)
+    if (window.visualViewport) {
+      return {
+        width: window.visualViewport.width,
+        height: window.visualViewport.height
+      };
+    }
+    // Fallback para navegadores que no soportan visualViewport
+    return {
+      width: window.innerWidth,
+      height: window.innerHeight
+    };
+  };
+
+  // Detectar si es realmente un dispositivo móvil (no solo DevTools)
+  const isRealMobile = () => {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+           (window.innerWidth <= 768 && window.innerHeight <= 1024);
+  };
+
+  const [dimensions, setDimensions] = useState(() => {
+    const viewport = getRealViewport();
+    const realMobile = isRealMobile();
+    return {
+      width: viewport.width,
+      height: viewport.height,
+      isMobile: realMobile || viewport.width < 700,
+      isSmallMobile: realMobile || viewport.width < 500,
+      isLandscape: viewport.width > viewport.height,
+      isRealMobile: realMobile
+    };
   });
 
   useEffect(() => {
     const handleResize = () => {
+      const viewport = getRealViewport();
+      const realMobile = isRealMobile();
       setDimensions({
-        width: window.innerWidth,
-        height: window.innerHeight,
-        isMobile: window.innerWidth < 700,
-        isSmallMobile: window.innerWidth < 500,
-        isLandscape: window.innerWidth > window.innerHeight
+        width: viewport.width,
+        height: viewport.height,
+        isMobile: realMobile || viewport.width < 700,
+        isSmallMobile: realMobile || viewport.width < 500,
+        isLandscape: viewport.width > viewport.height,
+        isRealMobile: realMobile
       });
     };
 
+    // Listener para cambios de viewport (móviles)
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener('resize', handleResize);
+      window.visualViewport.addEventListener('scroll', handleResize);
+    }
+    
+    // Listener tradicional para navegadores de escritorio
     window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    
+    return () => {
+      if (window.visualViewport) {
+        window.visualViewport.removeEventListener('resize', handleResize);
+        window.visualViewport.removeEventListener('scroll', handleResize);
+      }
+      window.removeEventListener('resize', handleResize);
+    };
   }, []);
 
   // Cálculo de tamaños base
@@ -59,12 +103,12 @@ export const useResponsive = () => {
 
   // Cálculo de posiciones
   const calcularPosiciones = () => {
-    const { width, height, isMobile, isSmallMobile } = dimensions;
+    const { width, height, isMobile, isSmallMobile, isRealMobile } = dimensions;
     
     return {
       // Balance
       balance: {
-        bottom: isMobile ? '130px' : '20px',
+        bottom: isRealMobile ? '80px' : (isMobile ? '100px' : '20px'), // Ajuste para móviles reales
         left: isMobile ? '50%' : '20px',
         transform: isMobile ? 'translateX(-50%)' : 'none',
         fontSize: isMobile ? '12px' : '16px',
@@ -77,23 +121,23 @@ export const useResponsive = () => {
         left: isSmallMobile ? '55%' : '45%'
       },
       
-      // Botones de apuesta
-      botonesApuesta: {
-        bottom: isMobile ? '80px' : '20px',
-        gap: isMobile ? '8px' : '10px'
-      },
-      
-      // Botones de juego
-      botonesJuego: {
-        bottom: isMobile ? '180px' : '100px',
-        gap: isMobile ? '5px' : '10px',
-        maxWidth: isMobile ? '800px' : '600px',
-        tamañoBoton: {
-          padding: isMobile ? '6px 10px' : '10px 20px',
-          fontSize: isMobile ? '10px' : '16px',
-          minWidth: isMobile ? '60px' : '100px'
-        }
-      },
+       // Botones de apuesta (fichas)
+       botonesApuesta: {
+         bottom: isRealMobile ? '5px' : (isMobile ? '10px' : '20px'), // Ajuste especial para móviles reales
+         gap: isMobile ? '8px' : '10px'
+       },
+       
+       // Botones de juego
+       botonesJuego: {
+         bottom: isMobile ? '150px' : '100px',
+         gap: isMobile ? '5px' : '10px',
+         maxWidth: isMobile ? '800px' : '600px',
+         tamañoBoton: {
+           padding: isMobile ? '6px 10px' : '10px 20px',
+           fontSize: isMobile ? '10px' : '16px',
+           minWidth: isMobile ? '60px' : '100px'
+         }
+       },
       
       // Fichas del crupier
       fichasCrupier: {
