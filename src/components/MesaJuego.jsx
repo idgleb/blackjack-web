@@ -119,8 +119,7 @@ const MesaJuego = () => {
     // Solo mostrar game over después de 2 segundos de juego activo
     const timer = setTimeout(() => {
       if (jugador1 && 
-          jugador1.balanceJugador < 100 && 
-          jugador1.apuestoJugador === 0 && 
+          (jugador1.balanceJugador + jugador1.apuestoJugador) < 100 && 
           jugador1.cartasQueTiene?.length === 0) {
         setMostrarGameOver(true);
       } else {
