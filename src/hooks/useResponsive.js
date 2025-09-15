@@ -108,7 +108,7 @@ export const useResponsive = () => {
     return {
       // Balance
       balance: {
-        bottom: isRealMobile ? '80px' : (isMobile ? '100px' : '20px'), // Ajuste para móviles reales
+        bottom: isRealMobile ? `${Math.max(80, height * 0.15)}px` : (isMobile ? '140px' : '20px'), // 15% de la altura mínimo 80px
         left: isMobile ? '50%' : '20px',
         transform: isMobile ? 'translateX(-50%)' : 'none',
         fontSize: isMobile ? '12px' : '16px',
@@ -123,13 +123,13 @@ export const useResponsive = () => {
       
        // Botones de apuesta (fichas)
        botonesApuesta: {
-         bottom: isRealMobile ? '5px' : (isMobile ? '10px' : '20px'), // Ajuste especial para móviles reales
+         bottom: isRealMobile ? `${Math.max(30, height * 0.05)}px` : (isMobile ? '60px' : '20px'), // 5% de la altura mínimo 30px
          gap: isMobile ? '8px' : '10px'
        },
        
        // Botones de juego
        botonesJuego: {
-         bottom: isMobile ? '150px' : '100px',
+         bottom: isRealMobile ? `${Math.max(120, height * 0.25)}px` : (isMobile ? '220px' : '100px'), // 25% de la altura mínimo 120px
          gap: isMobile ? '5px' : '10px',
          maxWidth: isMobile ? '800px' : '600px',
          tamañoBoton: {
