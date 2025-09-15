@@ -7,14 +7,8 @@ import { useState, useEffect } from 'react';
 export const useResponsive = () => {
   // Función para obtener dimensiones reales del viewport
   const getRealViewport = () => {
-    // En móviles, usar visualViewport si está disponible (área visible real)
-    if (window.visualViewport) {
-      return {
-        width: window.visualViewport.width,
-        height: window.visualViewport.height
-      };
-    }
-    // Fallback para navegadores que no soportan visualViewport
+    // SIEMPRE usar window.innerWidth/Height (área visible del navegador)
+    // Esto funciona correctamente en móviles reales
     return {
       width: window.innerWidth,
       height: window.innerHeight
@@ -28,10 +22,14 @@ export const useResponsive = () => {
     
     // Debug para móviles reales
     if (isMobileUA) {
+      const viewport = getRealViewport();
       console.log('📱 Móvil real detectado:', {
-        userAgent: navigator.userAgent,
+        userAgent: navigator.userAgent.substring(0, 50) + '...',
         windowSize: { width: window.innerWidth, height: window.innerHeight },
-        visualViewport: window.visualViewport ? { width: window.visualViewport.width, height: window.visualViewport.height } : 'No disponible'
+        screenSize: { width: screen.width, height: screen.height },
+        visualViewport: window.visualViewport ? { width: window.visualViewport.width, height: window.visualViewport.height } : 'No disponible',
+        finalViewport: viewport,
+        botonesApuesta: `bottom: ${isMobileUA ? '30px' : (window.innerWidth < 700 ? '10px' : '20px')}`
       });
     }
     
@@ -119,7 +117,7 @@ export const useResponsive = () => {
     return {
       // Balance
       balance: {
-        bottom: isRealMobile ? `${Math.max(80, height * 0.15)}px` : (isMobile ? '100px' : '20px'), // 15% de la altura mínimo 80px
+        bottom: isRealMobile ? '130px' : (isMobile ? '100px' : '20px'), // Más arriba para móviles reales
         left: isMobile ? '50%' : '20px',
         transform: isMobile ? 'translateX(-50%)' : 'none',
         fontSize: isMobile ? '12px' : '16px',
@@ -134,13 +132,13 @@ export const useResponsive = () => {
       
        // Botones de apuesta (fichas)
        botonesApuesta: {
-         bottom: isRealMobile ? `${Math.max(20, height * 0.05)}px` : (isMobile ? '10px' : '20px'), // 5% de la altura en móviles reales
+         bottom: isRealMobile ? '50px' : (isMobile ? '10px' : '20px'), // Más arriba para móviles reales
          gap: isMobile ? '8px' : '10px'
        },
        
        // Botones de juego
        botonesJuego: {
-         bottom: isRealMobile ? `${Math.max(120, height * 0.25)}px` : (isMobile ? '150px' : '100px'), // 25% de la altura mínimo 120px
+         bottom: isRealMobile ? '150px' : (isMobile ? '150px' : '100px'), // Valor fijo para móviles reales
          gap: isMobile ? '5px' : '10px',
          maxWidth: isMobile ? '800px' : '600px',
          tamañoBoton: {
