@@ -1,8 +1,11 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import soundManager from '../utils/soundManager';
+import useResponsive from '../hooks/useResponsive';
 
 const BotonesApuesta = ({ onApostar, visible = true }) => {
+  const { tamaños } = useResponsive();
+  
   const fichas = [
     { valor: 10, imagen: '/blackjack-web/images/fichas/f10.png' },
     { valor: 25, imagen: '/blackjack-web/images/fichas/f25.png' },
@@ -43,8 +46,8 @@ const BotonesApuesta = ({ onApostar, visible = true }) => {
           whileTap={{ scale: 0.95 }}
           onClick={() => handleClick(ficha.valor)}
           style={{
-            width: '60px',
-            height: '60px',
+            width: `${tamaños.tamañoFicha}px`,
+            height: `${tamaños.tamañoFicha}px`,
             border: 'none',
             outline: 'none',
             borderRadius: '50%',

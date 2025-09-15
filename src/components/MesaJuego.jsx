@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import useGameStore from '../store/gameStore';
 import soundManager from '../utils/soundManager';
+import useResponsive from '../hooks/useResponsive';
 import Carta from './Carta';
 import PanelFichas from './PanelFichas';
 import BotonesApuesta from './BotonesApuesta';
@@ -34,7 +35,7 @@ const MesaJuego = () => {
     reiniciarJuego
   } = useGameStore();
 
-  const [anchoCarta, setAnchoCarta] = useState(120);
+  const { tamaños, posiciones, isMobile, isSmallMobile } = useResponsive();
   const [mostrarMensaje, setMostrarMensaje] = useState(false);
   const [animarGanancia, setAnimarGanancia] = useState(false);
   const [fichasCrupier, setFichasCrupier] = useState([]);
@@ -42,17 +43,6 @@ const MesaJuego = () => {
 
   useEffect(() => {
     try {
-      // Calcular tamaño de cartas según ventana
-      const calcularAnchoCarta = () => {
-        if (window.innerWidth <= window.innerHeight) {
-          setAnchoCarta(window.innerWidth / 6);
-        } else {
-          setAnchoCarta(window.innerHeight / 8);
-        }
-      };
-      
-      calcularAnchoCarta();
-      window.addEventListener('resize', calcularAnchoCarta);
       
       // Inicializar sonidos después de un pequeño delay
       const timeoutId = setTimeout(() => {
@@ -82,7 +72,6 @@ const MesaJuego = () => {
       
       return () => {
         clearTimeout(timeoutId);
-        window.removeEventListener('resize', calcularAnchoCarta);
         window.removeEventListener('beforeunload', guardarBalance);
         document.removeEventListener('click', handleFirstInteraction);
         try {
@@ -197,8 +186,8 @@ const MesaJuego = () => {
         top: '50%',
         left: '50%',
         transform: 'translate(-50%, -50%)',
-        width: window.innerWidth >= 700 ? '600px' : '400px',
-        height: window.innerWidth >= 700 ? '600px' : '400px',
+        width: posiciones.ursol.width,
+        height: posiciones.ursol.height,
         backgroundImage: 'url(/blackjack-web/images/ursol.png)',
         backgroundSize: 'contain',
         backgroundRepeat: 'no-repeat',
@@ -213,8 +202,8 @@ const MesaJuego = () => {
           position: 'absolute',
           top: '20px',
           right: '100px',
-          width: `${anchoCarta}px`,
-          height: `${anchoCarta * 1.46}px`,
+          width: `${tamaños.anchoCarta}px`,
+          height: `${tamaños.anchoCarta * 1.46}px`,
           backgroundImage: 'url(/blackjack-web/images/cartas/cartacubierta.png)',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
@@ -250,8 +239,8 @@ const MesaJuego = () => {
         top: '0px',
         left: '50%',
         transform: 'translateX(-50%)',
-        width: window.innerWidth < 700 ? '200px' : '300px',
-        height: window.innerWidth < 700 ? '100px' : '150px',
+        width: posiciones.fichasCrupier.width,
+        height: posiciones.fichasCrupier.height,
         backgroundImage: 'url(/blackjack-web/images/fichas_crupier.png)',
         backgroundSize: 'contain',
         backgroundRepeat: 'no-repeat',
@@ -265,7 +254,7 @@ const MesaJuego = () => {
           carta={carta}
           index={index}
           jugador={jugador1}
-          anchoCarta={anchoCarta}
+          anchoCarta={tamaños.anchoCarta}
         />
       ))}
 
@@ -276,7 +265,7 @@ const MesaJuego = () => {
           carta={carta}
           index={index}
           jugador={crupier}
-          anchoCarta={anchoCarta}
+          anchoCarta={tamaños.anchoCarta}
         />
       ))}
 
@@ -302,8 +291,8 @@ const MesaJuego = () => {
         bottom: '250px',
         left: '50%',
         transform: 'translateX(-50%)',
-        width: `${anchoCarta * 0.8}px`,
-        height: `${anchoCarta * 0.8}px`,
+        width: `${tamaños.anchoCarta * 0.8}px`,
+        height: `${tamaños.anchoCarta * 0.8}px`,
         backgroundImage: 'url(/blackjack-web/images/apuesto.png)',
         backgroundSize: 'contain',
         backgroundRepeat: 'no-repeat',
@@ -364,8 +353,8 @@ const MesaJuego = () => {
             top: '50%',
             left: '50%',
             backgroundColor: 'rgba(0,0,0,0.9)',
-            padding: window.innerWidth < 700 ? '20px' : '40px',
-            borderRadius: window.innerWidth < 700 ? '15px' : '20px',
+            padding: isMobile ? '20px' : '40px',
+            borderRadius: isMobile ? '15px' : '20px',
             textAlign: 'center',
             color: 'white',
             zIndex: 2000,

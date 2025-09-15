@@ -1,8 +1,9 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import useResponsive from '../hooks/useResponsive';
 
 const Mensaje = ({ texto, color, visible }) => {
-  const isMobile = window.innerWidth < 700;
+  const { posiciones } = useResponsive();
   
   return (
     <AnimatePresence>
@@ -19,14 +20,14 @@ const Mensaje = ({ texto, color, visible }) => {
             transform: 'translate(-50%, -50%)',
             backgroundColor: color,
             color: '#FFFF00',
-            padding: isMobile ? '8px 12px' : '20px 40px',
-            borderRadius: isMobile ? '8px' : '22px',
-            fontSize: isMobile ? '12px' : '24px',
+            padding: posiciones.mensaje.padding,
+            borderRadius: posiciones.mensaje.borderRadius,
+            fontSize: posiciones.mensaje.fontSize,
             fontWeight: 'bold',
             textAlign: 'center',
             boxShadow: '0 8px 16px rgba(0,0,0,0.4)',
             zIndex: 1000,
-            minWidth: isMobile ? '150px' : '300px'
+            minWidth: posiciones.mensaje.minWidth
           }}
         >
           {texto}
