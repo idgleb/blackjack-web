@@ -335,8 +335,22 @@ const useGameStore = create((set, get) => ({
         }
       }
       return true;
+    } else {
+      // Reproducir sonido de error
+      if (!soundManager.initialized) soundManager.init();
+      soundManager.playPop();
+      
+      // Mostrar mensaje de error (apuesta máxima, etc.)
+      set({ 
+        mensaje: resultado,
+        colorMensaje: "#710001" // colorPierdes
+      });
+      // Limpiar mensaje después de 2 segundos
+      setTimeout(() => {
+        set({ mensaje: "", colorMensaje: "" });
+      }, 2000);
+      return resultado;
     }
-    return resultado;
   },
   
   // Turno del crupier
