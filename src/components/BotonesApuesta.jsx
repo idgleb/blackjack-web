@@ -4,7 +4,7 @@ import soundManager from '../utils/soundManager';
 import useResponsive from '../hooks/useResponsive';
 
 const BotonesApuesta = ({ onApostar, visible = true }) => {
-  const { tamaños } = useResponsive();
+  const { tamaños, posiciones } = useResponsive();
   
   const fichas = [
     { valor: 10, imagen: '/blackjack-web/images/fichas/f10.png' },
@@ -30,11 +30,11 @@ const BotonesApuesta = ({ onApostar, visible = true }) => {
       style={{
         position: 'absolute',
         left: '50%',
-        bottom: '20px',
+        bottom: posiciones.botonesApuesta.bottom,
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        gap: '10px',
+        gap: posiciones.botonesApuesta.gap,
         width: 'auto',
         pointerEvents: visible ? 'auto' : 'none'
       }}

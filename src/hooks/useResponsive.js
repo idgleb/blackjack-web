@@ -64,7 +64,7 @@ export const useResponsive = () => {
     return {
       // Balance
       balance: {
-        bottom: isMobile ? '100px' : '20px',
+        bottom: isMobile ? '130px' : '20px',
         left: isMobile ? '50%' : '20px',
         transform: isMobile ? 'translateX(-50%)' : 'none',
         fontSize: isMobile ? '12px' : '16px',
@@ -77,9 +77,15 @@ export const useResponsive = () => {
         left: isSmallMobile ? '55%' : '45%'
       },
       
+      // Botones de apuesta
+      botonesApuesta: {
+        bottom: isMobile ? '80px' : '20px',
+        gap: isMobile ? '8px' : '10px'
+      },
+      
       // Botones de juego
       botonesJuego: {
-        bottom: isMobile ? '150px' : '100px',
+        bottom: isMobile ? '180px' : '100px',
         gap: isMobile ? '5px' : '10px',
         maxWidth: isMobile ? '800px' : '600px',
         tamañoBoton: {
