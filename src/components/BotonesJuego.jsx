@@ -29,6 +29,19 @@ const BotonesJuego = ({
     minWidth: isMobile ? '80px' : '100px'
   };
 
+  // Estilo específico para botones de acción (MÁS, PARAR, DOBLAR) - más grandes
+  const actionButtonStyle = {
+    padding: isMobile ? '10px 16px' : '12px 24px',
+    fontSize: isMobile ? '14px' : '18px',
+    fontWeight: 'bold',
+    border: 'none',
+    borderRadius: '8px',
+    cursor: disabled ? 'not-allowed' : 'pointer',
+    boxShadow: '0 4px 8px rgba(0,0,0,0.3)',
+    color: 'white',
+    minWidth: isMobile ? '90px' : '120px'
+  };
+
   return (
     <>
       {/* Botones de gestión: REPARTIR, SACAR UNA, SACAR TODAS - Posición original */}
@@ -98,7 +111,7 @@ const BotonesJuego = ({
               whileTap={{ scale: 0.95 }}
               onClick={onPedir}
               disabled={disabled}
-              style={{...buttonStyle, background: 'linear-gradient(to bottom, #2196F3, #1976D2)'}}
+              style={{...actionButtonStyle, background: 'linear-gradient(to bottom, #2196F3, #1976D2)'}}
             >
               MÁS
             </motion.button>
@@ -107,7 +120,7 @@ const BotonesJuego = ({
               whileTap={{ scale: 0.95 }}
               onClick={onPlantarse}
               disabled={disabled}
-              style={{...buttonStyle, background: 'linear-gradient(to bottom, #FF9800, #F57C00)'}}
+              style={{...actionButtonStyle, background: 'linear-gradient(to bottom, #FF9800, #F57C00)'}}
             >
               PARAR
             </motion.button>
@@ -120,7 +133,7 @@ const BotonesJuego = ({
             whileTap={{ scale: 0.95 }}
             onClick={onDoblar}
             disabled={disabled}
-            style={{...buttonStyle, background: 'linear-gradient(to bottom, #9C27B0, #7B1FA2)'}}
+            style={{...actionButtonStyle, background: 'linear-gradient(to bottom, #9C27B0, #7B1FA2)'}}
           >
             DOBLAR
           </motion.button>
