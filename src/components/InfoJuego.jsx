@@ -1,6 +1,5 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import useResponsive from '../hooks/useResponsive';
 
 const InfoJuego = ({ 
   balance, 
@@ -11,8 +10,6 @@ const InfoJuego = ({
   mostrarPuntosJugador,
   mostrarPuntosCrupier 
 }) => {
-  const { posiciones } = useResponsive();
-  
   const infoStyle = {
     color: 'white',
     fontSize: '18px',
@@ -31,11 +28,11 @@ const InfoJuego = ({
         style={{
           ...infoStyle,
           position: 'absolute',
-          bottom: posiciones.balance.bottom,
-          left: posiciones.balance.left,
-          transform: posiciones.balance.transform,
-          fontSize: posiciones.balance.fontSize,
-          padding: posiciones.balance.padding
+          bottom: window.innerWidth < 700 ? '100px' : '20px',
+          left: window.innerWidth < 700 ? '50%' : '20px',
+          transform: window.innerWidth < 700 ? 'translateX(-50%)' : 'none',
+          fontSize: window.innerWidth < 700 ? '12px' : '16px',
+          padding: window.innerWidth < 700 ? '8px 16px' : '10px 20px'
         }}
       >
         Balance: ${balance.toFixed(2)}
@@ -81,7 +78,7 @@ const InfoJuego = ({
               bottom: '300px',
               left: '20px',
               backgroundColor: 'rgba(67, 21, 0, 0.8)',
-              fontSize: posiciones.puntos.fontSize
+              fontSize: window.innerWidth < 700 ? '18px' : '24px'
             }}
           >
             {puntosJugador}
@@ -102,7 +99,7 @@ const InfoJuego = ({
               top: '150px',
               left: '20px',
               backgroundColor: 'rgba(67, 21, 0, 0.8)',
-              fontSize: posiciones.puntos.fontSize
+              fontSize: window.innerWidth < 700 ? '18px' : '24px'
             }}
           >
             {puntosCrupier}

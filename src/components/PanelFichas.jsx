@@ -1,10 +1,11 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import useResponsive from '../hooks/useResponsive';
 import Ficha from './Ficha';
 
 const PanelFichas = ({ fichas, enApuesta = true, animarGanancia = false }) => {
-  const { tamaños, posiciones, isSmallMobile } = useResponsive();
+  const alturaFicha = window.innerWidth <= window.innerHeight 
+    ? window.innerWidth / 10 
+    : window.innerHeight / 14;
 
   return (
     <motion.div
@@ -12,17 +13,17 @@ const PanelFichas = ({ fichas, enApuesta = true, animarGanancia = false }) => {
       animate={animarGanancia ? {
         x: enApuesta ? 0 : window.innerWidth / 2,
         y: enApuesta ? 
-          (window.innerHeight - tamaños.alturaFicha) : 
-          (window.innerHeight - tamaños.alturaFicha / 2)
+          (window.innerHeight - alturaFicha) : 
+          (window.innerHeight - alturaFicha / 2)
       } : {}}
       transition={{ duration: 2, ease: "easeOut" }}
       style={{
         position: 'absolute',
-        left: isSmallMobile ? '55%' : '45%',
-        bottom: enApuesta ? (isSmallMobile ? '180px' : '155px') : 'auto',
+        left: window.innerWidth < 500 ? '55%' : '45%',
+        bottom: enApuesta ? (window.innerWidth < 500 ? '180px' : '155px') : 'auto',
         top: enApuesta ? 'auto' : '0',
-        width: `${tamaños.alturaFicha * 3}px`,
-        height: `${tamaños.alturaFicha * 2}px`,
+        width: `${alturaFicha * 3}px`,
+        height: `${alturaFicha * 2}px`,
         pointerEvents: 'none'
       }}
     >

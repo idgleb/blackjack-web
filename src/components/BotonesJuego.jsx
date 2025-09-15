@@ -1,6 +1,5 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import useResponsive from '../hooks/useResponsive';
 
 const BotonesJuego = ({ 
   onRepartir, 
@@ -15,30 +14,32 @@ const BotonesJuego = ({
   mostrarSacarFichas,
   disabled
 }) => {
-  const { posiciones, isMobile } = useResponsive();
+  const isMobile = window.innerWidth < 700;
   
   const buttonStyle = {
-    ...posiciones.botonesJuego.tamañoBoton,
+    padding: isMobile ? '6px 10px' : '10px 20px',
+    fontSize: isMobile ? '10px' : '16px',
     fontWeight: 'bold',
     border: 'none',
     borderRadius: '5px',
     cursor: disabled ? 'not-allowed' : 'pointer',
     boxShadow: '0 4px 8px rgba(0,0,0,0.2)',
     background: 'linear-gradient(to bottom, #4CAF50, #45a049)',
-    color: 'white'
+    color: 'white',
+    minWidth: isMobile ? '60px' : '100px'
   };
 
   return (
     <div style={{
       position: 'absolute',
-      bottom: posiciones.botonesJuego.bottom,
+      bottom: isMobile ? '150px' : '100px',
       left: '50%',
       transform: 'translateX(-50%)',
       display: 'flex',
-      gap: posiciones.botonesJuego.gap,
+      gap: isMobile ? '5px' : '10px',
       flexWrap: isMobile ? 'nowrap' : 'wrap',
       justifyContent: 'center',
-      maxWidth: posiciones.botonesJuego.maxWidth
+      maxWidth: isMobile ? '800px' : '600px'
     }}>
       {mostrarRepartir && (
         <motion.button

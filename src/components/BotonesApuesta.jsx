@@ -1,11 +1,8 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import soundManager from '../utils/soundManager';
-import useResponsive from '../hooks/useResponsive';
 
 const BotonesApuesta = ({ onApostar, visible = true }) => {
-  const { tamaños, posiciones } = useResponsive();
-  
   const fichas = [
     { valor: 10, imagen: '/blackjack-web/images/fichas/f10.png' },
     { valor: 25, imagen: '/blackjack-web/images/fichas/f25.png' },
@@ -30,14 +27,12 @@ const BotonesApuesta = ({ onApostar, visible = true }) => {
       style={{
         position: 'absolute',
         left: '50%',
-        bottom: posiciones.botonesApuesta.bottom,
+        bottom: '20px',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        gap: posiciones.botonesApuesta.gap,
+        gap: '10px',
         width: 'auto',
-        maxWidth: '90vw', // Evitar que se salgan de la pantalla
-        padding: '0 10px', // Padding lateral
         pointerEvents: visible ? 'auto' : 'none'
       }}
     >
@@ -48,8 +43,8 @@ const BotonesApuesta = ({ onApostar, visible = true }) => {
           whileTap={{ scale: 0.95 }}
           onClick={() => handleClick(ficha.valor)}
           style={{
-            width: `${tamaños.tamañoFicha}px`,
-            height: `${tamaños.tamañoFicha}px`,
+            width: '60px',
+            height: '60px',
             border: 'none',
             outline: 'none',
             borderRadius: '50%',
