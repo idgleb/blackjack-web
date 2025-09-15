@@ -77,7 +77,9 @@ const InfoJuego = ({
             style={{
               ...infoStyle,
               position: 'absolute',
-              bottom: '300px',
+              bottom: (window.innerWidth < 700 && window.innerWidth > window.innerHeight) 
+                ? '200px'  // Landscape móvil: más abajo
+                : '300px', // Portrait o desktop: posición normal
               left: '20px',
               backgroundColor: 'rgba(67, 21, 0, 0.8)',
               fontSize: window.innerWidth < 700 ? '18px' : '24px'
