@@ -5,11 +5,11 @@ Una implementación completa del juego de Blackjack (21) en React, convertida de
 ## 🎮 **¡Juega Ahora!**
 **[🎯 JUGAR BLACKJACK EN VIVO](https://idgleb.github.io/blackjack-web/)**
 
-![Blackjack Game](https://img.shields.io/badge/Game-Blackjack-green)
-![React](https://img.shields.io/badge/React-18.2.0-blue)
-![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-yellow)
-![License](https://img.shields.io/badge/License-MIT-green)
-![Original App](https://img.shields.io/badge/Original-Android%20App-orange)
+[![Blackjack Game](https://img.shields.io/badge/Game-Blackjack-green)](https://idgleb.github.io/blackjack-web/)
+[![React](https://img.shields.io/badge/React-18.2.0-blue)](https://reactjs.org/)
+[![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-yellow)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+[![License](https://img.shields.io/badge/License-MIT-green)](https://github.com/idgleb/blackjack-web/blob/main/LICENSE)
+[![Original App](https://img.shields.io/badge/Original-Android%20App-orange)](https://play.google.com/store/apps/details?id=com.ursolgleb.blackjacknoactivity)
 [![Live Demo](https://img.shields.io/badge/Live%20Demo-GitHub%20Pages-brightgreen)](https://idgleb.github.io/blackjack-web/)
 [![Play Now](https://img.shields.io/badge/🎮%20PLAY%20NOW-Blackjack%20Live-orange)](https://idgleb.github.io/blackjack-web/)
 
