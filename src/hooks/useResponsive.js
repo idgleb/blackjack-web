@@ -23,8 +23,19 @@ export const useResponsive = () => {
 
   // Detectar si es realmente un dispositivo móvil (no solo DevTools)
   const isRealMobile = () => {
-    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
-           (window.innerWidth <= 768 && window.innerHeight <= 1024);
+    const isMobileUA = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    const isMobileSize = window.innerWidth <= 768 && window.innerHeight <= 1024;
+    
+    // Debug para móviles reales
+    if (isMobileUA) {
+      console.log('📱 Móvil real detectado:', {
+        userAgent: navigator.userAgent,
+        windowSize: { width: window.innerWidth, height: window.innerHeight },
+        visualViewport: window.visualViewport ? { width: window.visualViewport.width, height: window.visualViewport.height } : 'No disponible'
+      });
+    }
+    
+    return isMobileUA || isMobileSize;
   };
 
   const [dimensions, setDimensions] = useState(() => {
@@ -108,7 +119,7 @@ export const useResponsive = () => {
     return {
       // Balance
       balance: {
-        bottom: isRealMobile ? `${Math.max(80, height * 0.15)}px` : (isMobile ? '140px' : '20px'), // 15% de la altura mínimo 80px
+        bottom: isRealMobile ? `${Math.max(80, height * 0.15)}px` : (isMobile ? '100px' : '20px'), // 15% de la altura mínimo 80px
         left: isMobile ? '50%' : '20px',
         transform: isMobile ? 'translateX(-50%)' : 'none',
         fontSize: isMobile ? '12px' : '16px',
@@ -123,13 +134,13 @@ export const useResponsive = () => {
       
        // Botones de apuesta (fichas)
        botonesApuesta: {
-         bottom: isRealMobile ? `${Math.max(30, height * 0.05)}px` : (isMobile ? '60px' : '20px'), // 5% de la altura mínimo 30px
+         bottom: isRealMobile ? `${Math.max(20, height * 0.05)}px` : (isMobile ? '10px' : '20px'), // 5% de la altura en móviles reales
          gap: isMobile ? '8px' : '10px'
        },
        
        // Botones de juego
        botonesJuego: {
-         bottom: isRealMobile ? `${Math.max(120, height * 0.25)}px` : (isMobile ? '220px' : '100px'), // 25% de la altura mínimo 120px
+         bottom: isRealMobile ? `${Math.max(120, height * 0.25)}px` : (isMobile ? '150px' : '100px'), // 25% de la altura mínimo 120px
          gap: isMobile ? '5px' : '10px',
          maxWidth: isMobile ? '800px' : '600px',
          tamañoBoton: {
