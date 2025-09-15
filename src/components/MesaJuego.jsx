@@ -176,9 +176,12 @@ const MesaJuego = () => {
     <div style={{
       width: '100vw',
       height: '100vh',
+      minHeight: '100vh',
       background: 'radial-gradient(ellipse at center, #1a3d1a 0%, #0a1a0a 100%)',
       position: 'relative',
-      overflow: 'hidden'
+      overflow: 'hidden',
+      display: 'flex',
+      flexDirection: 'column'
     }}>
       {/* Imagen ursol.png */}
       <div style={{

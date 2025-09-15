@@ -29,7 +29,15 @@ export const useResponsive = () => {
         screenSize: { width: screen.width, height: screen.height },
         visualViewport: window.visualViewport ? { width: window.visualViewport.width, height: window.visualViewport.height } : 'No disponible',
         finalViewport: viewport,
-        botonesApuesta: `bottom: ${isMobileUA ? '30px' : (window.innerWidth < 700 ? '10px' : '20px')}`
+        botonesApuesta: `bottom: ${isMobileUA ? '50px' : (window.innerWidth < 700 ? '20px' : '20px')}`
+      });
+    }
+    
+    // Debug para DevTools (navegador de escritorio simulando móvil)
+    if (!isMobileUA && isMobileSize) {
+      console.log('🖥️ DevTools móvil detectado:', {
+        windowSize: { width: window.innerWidth, height: window.innerHeight },
+        botonesApuesta: 'bottom: 20px'
       });
     }
     
@@ -117,7 +125,7 @@ export const useResponsive = () => {
     return {
       // Balance
       balance: {
-        bottom: isRealMobile ? '130px' : (isMobile ? '100px' : '20px'), // Más arriba para móviles reales
+        bottom: isRealMobile ? '130px' : (isMobile ? '120px' : '20px'), // Ajustado para DevTools móvil
         left: isMobile ? '50%' : '20px',
         transform: isMobile ? 'translateX(-50%)' : 'none',
         fontSize: isMobile ? '12px' : '16px',
@@ -132,7 +140,7 @@ export const useResponsive = () => {
       
        // Botones de apuesta (fichas)
        botonesApuesta: {
-         bottom: isRealMobile ? '50px' : (isMobile ? '10px' : '20px'), // Más arriba para móviles reales
+         bottom: isRealMobile ? '50px' : (isMobile ? '20px' : '20px'), // Ajustado para DevTools móvil
          gap: isMobile ? '8px' : '10px'
        },
        

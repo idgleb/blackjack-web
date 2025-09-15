@@ -36,6 +36,8 @@ const BotonesApuesta = ({ onApostar, visible = true }) => {
         alignItems: 'center',
         gap: posiciones.botonesApuesta.gap,
         width: 'auto',
+        maxWidth: '90vw', // Evitar que se salgan de la pantalla
+        padding: '0 10px', // Padding lateral
         pointerEvents: visible ? 'auto' : 'none'
       }}
     >
