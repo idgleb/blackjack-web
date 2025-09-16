@@ -273,8 +273,8 @@ const MesaJuego = () => {
           whileTap={{ scale: 0.95 }}
           onClick={() => setMostrarMenu(!mostrarMenu)}
           style={{
-            padding: isLandscape ? '8px 12px' : (isMobile ? '6px 8px' : '12px 20px'),
-            fontSize: isLandscape ? '12px' : (isMobile ? '10px' : '16px'),
+            padding: isLandscape ? '8px 12px' : (isMobile ? '10px 16px' : '12px 20px'),
+            fontSize: isLandscape ? '12px' : (isMobile ? '12px' : '16px'),
             backgroundColor: 'rgba(76, 175, 80, 0.9)',
             color: 'white',
             border: 'none',
