@@ -14,15 +14,13 @@ Una implementación completa del juego de Blackjack (21) en React, convertida de
 [![Play Now](https://img.shields.io/badge/🎮%20PLAY%20NOW-Blackjack%20Live-orange)](https://idgleb.github.io/blackjack-web/)
 
 
-
-https://github.com/user-attachments/assets/c864640c-cd15-44bb-ac04-57ef4ca9d3a1
-
-
-
 <div style="display: flex;" align="center">
-<img src="https://github.com/user-attachments/assets/66ab3a11-ffaf-4b08-81a1-5301bfe05b68" style="width: 67%;"/>
- <img src="https://github.com/user-attachments/assets/e1adc97f-87ed-4852-8e8d-66516a553c5f" style="width: 25%;" />
+<img width="1080" height="1080" alt="2" src="https://github.com/user-attachments/assets/35500c06-01f9-455d-ba70-a491e964db3c" style="width: 45%;"/>
+<img width="1080" height="1080" alt="1" src="https://github.com/user-attachments/assets/6fb90934-0f20-4a5d-9986-37e5912e3323" style="width: 45%;"/>
 </div>
+
+
+
 
 
 ## ✨ Características
