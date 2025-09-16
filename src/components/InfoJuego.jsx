@@ -25,6 +25,28 @@ const InfoJuego = ({
 
   return (
     <>
+      {/* Info de apuesta (centralizado) */}
+      <motion.div
+        style={{
+          color: 'white',
+          fontSize: window.innerWidth < 700 ? '12px' : '14px',
+          fontWeight: 'bold',
+          textShadow: 'rgba(0, 0, 0, 0.5) 2px 2px 4px',
+          backgroundColor: 'rgba(0, 0, 0, 0.5)',
+          padding: window.innerWidth < 700 ? '8px 16px' : '10px 20px',
+          borderRadius: '10px',
+          backdropFilter: 'blur(5px)',
+          position: 'absolute',
+          top: '0px',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          opacity: 0.7,
+          zIndex: 9999
+        }}
+      >
+        {t('infoApuesta')}
+      </motion.div>
+
       {/* Balance */}
       <motion.div
         style={{

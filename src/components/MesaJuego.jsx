@@ -247,24 +247,8 @@ const MesaJuego = () => {
       }} />
 
       {/* Información de Apuesta */}
-      <div style={{
-        color: 'white', 
-        fontSize: isMobile ? '12px' : '14px', 
-        fontWeight: 'bold', 
-        textShadow: 'rgba(0, 0, 0, 0.5) 2px 2px 4px', 
-        backgroundColor: 'rgba(0, 0, 0, 0.5)', 
-        padding: isMobile ? '8px 16px' : '10px 20px', 
-        borderRadius: '10px', 
-        backdropFilter: 'blur(5px)', 
-        position: 'absolute', 
-        top: '0px', 
-        left: '50%', 
-        transform: 'translateX(-50%)', 
-        opacity: 0.7, 
-        zIndex: 9999
-      }}>
-        {t('infoApuesta')}
-      </div>
+      {/* infoApuesta movido a InfoJuego.jsx para centralizar */}
+      {/* infoApuesta movido a InfoJuego.jsx para centralizar */}
 
       {/* Botón Menú */}
       <div data-menu-container style={{ position: 'absolute', top: isMobile ? '8px' : '20px', left: isMobile ? '8px' : '20px', zIndex: 1000 }}>
@@ -894,24 +878,7 @@ const MesaJuego = () => {
       />
 
       {/* Información de apuestas */}
-      <div style={{
-        color: 'white', 
-        fontSize: '14px', 
-        fontWeight: 'bold', 
-        textShadow: 'rgba(0, 0, 0, 0.5) 2px 2px 4px', 
-        backgroundColor: 'rgba(0, 0, 0, 0.5)', 
-        padding: '10px 20px', 
-        borderRadius: '10px', 
-        backdropFilter: 'blur(5px)', 
-        position: 'absolute', 
-        top: '0px', 
-        left: '50%', 
-        transform: 'translateX(-50%)', 
-        opacity: 0.7,
-        zIndex: 9999
-      }}>
-        {t('infoApuesta')}
-      </div>
+      {/* infoApuesta centralizado en InfoJuego.jsx */}
 
       {/* Fichas del crupier */}
       <div style={{
