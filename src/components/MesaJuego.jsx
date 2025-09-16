@@ -31,7 +31,7 @@ const MesaJuego = () => {
     doblar,
     cargarBalance,
     guardarBalance,
-    reiniciarJuego
+    reiniciarJuegoCompleto
   } = useGameStore();
 
   const [anchoCarta, setAnchoCarta] = useState(120);
@@ -381,7 +381,7 @@ const MesaJuego = () => {
             onClick={() => {
               setMostrarGameOver(false);
               soundManager.playNuevaBaraja();
-              reiniciarJuego();
+              reiniciarJuegoCompleto();
             }}
             style={{
               marginTop: '20px',
