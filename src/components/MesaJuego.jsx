@@ -207,6 +207,35 @@ const MesaJuego = () => {
         opacity: 0.3,
         pointerEvents: 'none'
       }} />
+
+      {/* Botón Reiniciar Juego */}
+      <motion.button
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+        onClick={() => {
+          soundManager.playNuevaBaraja();
+          reiniciarJuegoCompleto();
+        }}
+        style={{
+          position: 'absolute',
+          top: window.innerWidth < 700 ? '8px' : '20px',
+          left: window.innerWidth < 700 ? '8px' : '20px',
+          padding: window.innerWidth < 700 ? '6px 8px' : '12px 20px',
+          fontSize: window.innerWidth < 700 ? '10px' : '16px',
+          backgroundColor: 'rgba(76, 175, 80, 0.9)',
+          color: 'white',
+          border: 'none',
+          borderRadius: window.innerWidth < 700 ? '6px' : '12px',
+          cursor: 'pointer',
+          zIndex: 1000,
+          fontWeight: 'bold',
+          boxShadow: '0 4px 8px rgba(0,0,0,0.3)',
+          transition: 'all 0.3s ease'
+        }}
+      >
+        Reiniciar
+      </motion.button>
+
       {/* Baraja */}
       <motion.div
         style={{
