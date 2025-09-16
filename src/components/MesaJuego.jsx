@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import useGameStore from '../store/gameStore';
 import soundManager from '../utils/soundManager';
+import { useLanguage } from '../hooks/useLanguage';
 import Carta from './Carta';
 import PanelFichas from './PanelFichas';
 import BotonesApuesta from './BotonesApuesta';
@@ -37,13 +38,28 @@ const MesaJuego = () => {
   const [anchoCarta, setAnchoCarta] = useState(120);
   const [mostrarMensaje, setMostrarMensaje] = useState(false);
   const [animarGanancia, setAnimarGanancia] = useState(false);
+  const [animarPerdida, setAnimarPerdida] = useState(false);
   const [fichasCrupier, setFichasCrupier] = useState([]);
   const [mostrarGameOver, setMostrarGameOver] = useState(false);
+  const [mostrarMenu, setMostrarMenu] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 700);
+  const [isLandscape, setIsLandscape] = useState(window.innerWidth > window.innerHeight && window.innerWidth < 700);
+  
+  // Hook de idioma
+  const { currentLanguage, changeLanguage, t, availableLanguages, isLoading } = useLanguage();
 
   useEffect(() => {
     try {
       // Calcular tamaño de cartas según ventana
       const calcularAnchoCarta = () => {
+        const width = window.innerWidth;
+        const height = window.innerHeight;
+        const isCurrentlyMobile = width < 700 || height < 700;
+        const isCurrentlyLandscape = width > height && (width < 700 || height < 700);
+        
+        setIsMobile(isCurrentlyMobile);
+        setIsLandscape(isCurrentlyLandscape);
+        
         if (window.innerWidth <= window.innerHeight) {
           setAnchoCarta(window.innerWidth / 6);
         } else {
@@ -103,14 +119,22 @@ const MesaJuego = () => {
       setTimeout(() => setMostrarMensaje(false), 3000);
       
       // Si es una ganancia, animar fichas
-      if (mensaje.includes('Ganas') || mensaje.includes('BlackJack')) {
-        setFichasCrupier([...fichasEnApuesta]);
-        setAnimarGanancia(true);
-        setTimeout(() => {
-          setAnimarGanancia(false);
-          setFichasCrupier([]);
-        }, 2000);
-      }
+      if (mensaje.includes('Ganas') || mensaje.includes('BlackJack') || mensaje.includes('win') || mensaje.includes('gana') || mensaje.includes('赢了') || mensaje.includes('जीते') || mensaje.includes('فزت') || mensaje.includes('ganha') || mensaje.includes('জিতেছেন') || mensaje.includes('выиграли') || mensaje.includes('勝ち') || mensaje.includes('gagnez')) {
+          setFichasCrupier([...fichasEnApuesta]);
+          setAnimarGanancia(true);
+          setTimeout(() => {
+            setAnimarGanancia(false);
+            setFichasCrupier([]);
+          }, 2000);
+        }
+        
+        // Si es una pérdida, animar fichas de apuesta hacia el crupier
+        if (mensaje.includes('Pierdes') || mensaje.includes('lose') || mensaje.includes('输了') || mensaje.includes('हारे') || mensaje.includes('خسرت') || mensaje.includes('perdeu') || mensaje.includes('হারলেন') || mensaje.includes('проиграли') || mensaje.includes('負け') || mensaje.includes('perdu')) {
+          setAnimarPerdida(true);
+          setTimeout(() => {
+            setAnimarPerdida(false);
+          }, 2000);
+        }
     }
   }, [mensaje, fichasEnApuesta]);
   
@@ -129,6 +153,20 @@ const MesaJuego = () => {
     
     return () => clearTimeout(timer);
   }, [jugador1?.balanceJugador, jugador1?.apuestoJugador, jugador1?.cartasQueTiene?.length]);
+
+  // Cerrar menú al hacer clic fuera (solo para desktop)
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (mostrarMenu && !isMobile && !isLandscape && !event.target.closest('[data-menu-container]')) {
+        setMostrarMenu(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [mostrarMenu, isMobile, isLandscape]);
 
   // Manejadores
   const handleApostar = (cantidad) => {
@@ -208,33 +246,635 @@ const MesaJuego = () => {
         pointerEvents: 'none'
       }} />
 
-      {/* Botón Reiniciar Juego */}
-      <motion.button
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-        onClick={() => {
-          soundManager.playNuevaBaraja();
-          reiniciarJuegoCompleto();
-        }}
-        style={{
-          position: 'absolute',
-          top: window.innerWidth < 700 ? '8px' : '20px',
-          left: window.innerWidth < 700 ? '8px' : '20px',
-          padding: window.innerWidth < 700 ? '6px 8px' : '12px 20px',
-          fontSize: window.innerWidth < 700 ? '10px' : '16px',
-          backgroundColor: 'rgba(76, 175, 80, 0.9)',
-          color: 'white',
-          border: 'none',
-          borderRadius: window.innerWidth < 700 ? '6px' : '12px',
-          cursor: 'pointer',
-          zIndex: 1000,
-          fontWeight: 'bold',
-          boxShadow: '0 4px 8px rgba(0,0,0,0.3)',
-          transition: 'all 0.3s ease'
-        }}
-      >
-        Reiniciar
-      </motion.button>
+      {/* Información de Apuesta */}
+      <div style={{
+        color: 'white', 
+        fontSize: isMobile ? '12px' : '14px', 
+        fontWeight: 'bold', 
+        textShadow: 'rgba(0, 0, 0, 0.5) 2px 2px 4px', 
+        backgroundColor: 'rgba(0, 0, 0, 0.5)', 
+        padding: isMobile ? '8px 16px' : '10px 20px', 
+        borderRadius: '10px', 
+        backdropFilter: 'blur(5px)', 
+        position: 'absolute', 
+        top: '0px', 
+        left: '50%', 
+        transform: 'translateX(-50%)', 
+        opacity: 0.7, 
+        zIndex: 9999
+      }}>
+        {t('infoApuesta')}
+      </div>
+
+      {/* Botón Menú */}
+      <div data-menu-container style={{ position: 'absolute', top: isMobile ? '8px' : '20px', left: isMobile ? '8px' : '20px', zIndex: 1000 }}>
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={() => setMostrarMenu(!mostrarMenu)}
+          style={{
+            padding: isLandscape ? '8px 12px' : (isMobile ? '6px 8px' : '12px 20px'),
+            fontSize: isLandscape ? '12px' : (isMobile ? '10px' : '16px'),
+            backgroundColor: 'rgba(76, 175, 80, 0.9)',
+            color: 'white',
+            border: 'none',
+            borderRadius: isLandscape ? '8px' : (isMobile ? '6px' : '12px'),
+            cursor: 'pointer',
+            fontWeight: 'bold',
+            boxShadow: '0 4px 8px rgba(0,0,0,0.3)',
+            transition: 'all 0.3s ease'
+          }}
+        >
+          {t('menu')}
+        </motion.button>
+
+        {/* Dropdown del Menú para Desktop */}
+        {mostrarMenu && !isMobile && (
+          <motion.div
+            initial={{ opacity: 0, y: -10, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -10, scale: 0.95 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+            style={{
+              position: 'absolute',
+              top: '100%',
+              left: 0,
+              marginTop: '8px',
+              background: 'linear-gradient(145deg, rgba(20, 20, 20, 0.95), rgba(40, 40, 40, 0.95))',
+              backdropFilter: 'blur(10px)',
+              borderRadius: '16px',
+              padding: '12px 0',
+              minWidth: '220px',
+              boxShadow: '0 8px 32px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.1)',
+              border: '1px solid rgba(255,255,255,0.15)',
+              overflow: 'hidden'
+            }}
+          >
+            {/* Separador decorativo */}
+            <div style={{
+              height: '1px',
+              background: 'linear-gradient(90deg, transparent, rgba(76, 175, 80, 0.5), transparent)',
+              margin: '0 16px 8px 16px'
+            }} />
+            
+            <motion.button
+              whileHover={{ 
+                backgroundColor: 'rgba(76, 175, 80, 0.2)',
+                x: 4
+              }}
+              whileTap={{ scale: 0.98 }}
+              onClick={() => {
+                setMostrarMenu(false);
+                soundManager.playNuevaBaraja();
+                reiniciarJuegoCompleto();
+              }}
+              style={{
+                width: '100%',
+                padding: '16px 20px',
+                fontSize: '15px',
+                backgroundColor: 'transparent',
+                color: '#ffffff',
+                border: 'none',
+                cursor: 'pointer',
+                textAlign: 'left',
+                transition: 'all 0.3s ease',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '10px',
+                fontWeight: '500'
+              }}
+            >
+              <span style={{ fontSize: '16px' }}>🔄</span>
+              <span>{t('reiniciarJuego')}</span>
+            </motion.button>
+            
+            {/* Separador entre opciones */}
+            <div style={{
+              height: '1px',
+              background: 'rgba(255,255,255,0.1)',
+              margin: '4px 16px'
+            }} />
+            
+            <motion.button
+              whileHover={{ 
+                backgroundColor: 'rgba(33, 150, 243, 0.2)',
+                x: 4
+              }}
+              whileTap={{ scale: 0.98 }}
+              onClick={() => {
+                setMostrarMenu(false);
+                window.open('https://play.google.com/store/apps/details?id=com.ursolgleb.blackjacknoactivity', '_blank');
+              }}
+              style={{
+                width: '100%',
+                padding: '16px 20px',
+                fontSize: '15px',
+                backgroundColor: 'transparent',
+                color: '#ffffff',
+                border: 'none',
+                cursor: 'pointer',
+                textAlign: 'left',
+                transition: 'all 0.3s ease',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '10px',
+                fontWeight: '500'
+              }}
+            >
+              <span style={{ fontSize: '16px' }}>📱</span>
+              <span>{t('cargarAppPlayStore')}</span>
+            </motion.button>
+            
+            {/* Separador entre secciones */}
+            <div style={{
+              height: '1px',
+              background: 'rgba(255,255,255,0.1)',
+              margin: '8px 16px'
+            }} />
+            
+            {/* Selector de idioma */}
+            <div style={{
+              padding: '8px 16px',
+              fontSize: '13px',
+              color: 'rgba(255,255,255,0.7)',
+              fontWeight: '500',
+              textAlign: 'center'
+            }}>
+              🌍 {t('menu')} / Language
+            </div>
+            
+            {/* Lista de idiomas */}
+            <div style={{
+              maxHeight: '250px',
+              overflowY: 'auto',
+              padding: '0 8px 8px 8px'
+            }}>
+              {availableLanguages.map(lang => (
+                <motion.button
+                  key={lang.code}
+                  whileHover={{ 
+                    backgroundColor: currentLanguage === lang.code ? 'rgba(76, 175, 80, 0.3)' : 'rgba(255,255,255,0.1)',
+                    x: 4
+                  }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={() => {
+                    setMostrarMenu(false);
+                    changeLanguage(lang.code);
+                  }}
+                  disabled={isLoading}
+                  style={{
+                    width: '100%',
+                    padding: '10px 16px',
+                    fontSize: '13px',
+                    backgroundColor: currentLanguage === lang.code ? 'rgba(76, 175, 80, 0.2)' : 'transparent',
+                    color: currentLanguage === lang.code ? '#4CAF50' : '#ffffff',
+                    border: 'none',
+                    cursor: isLoading ? 'not-allowed' : 'pointer',
+                    textAlign: 'left',
+                    transition: 'all 0.3s ease',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    fontWeight: '500',
+                    borderRadius: '6px',
+                    margin: '2px 0',
+                    opacity: isLoading ? 0.6 : 1
+                  }}
+                >
+                  <span style={{ fontSize: '14px' }}>{lang.flag}</span>
+                  <span style={{ flex: 1 }}>{lang.name}</span>
+                  {currentLanguage === lang.code && (
+                    <span style={{ fontSize: '12px', color: '#4CAF50' }}>✓</span>
+                  )}
+                </motion.button>
+              ))}
+            </div>
+            
+            {/* Separador decorativo inferior */}
+            <div style={{
+              height: '1px',
+              background: 'linear-gradient(90deg, transparent, rgba(76, 175, 80, 0.5), transparent)',
+              margin: '8px 16px 0 16px'
+            }} />
+          </motion.div>
+        )}
+      </div>
+
+      {/* Bottom Sheet para Móviles Portrait */}
+      {mostrarMenu && isMobile && !isLandscape && (
+        <>
+          {/* Overlay */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setMostrarMenu(false)}
+            style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundColor: 'rgba(0, 0, 0, 0.5)',
+              zIndex: 1999,
+              backdropFilter: 'blur(2px)'
+            }}
+          />
+          
+          {/* Bottom Sheet */}
+          <motion.div
+            initial={{ y: '100%' }}
+            animate={{ y: 0 }}
+            exit={{ y: '100%' }}
+            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+            style={{
+              position: 'fixed',
+              bottom: 0,
+              left: 0,
+              right: 0,
+              backgroundColor: 'rgba(20, 20, 20, 0.98)',
+              backdropFilter: 'blur(20px)',
+              borderTopLeftRadius: '20px',
+              borderTopRightRadius: '20px',
+              padding: '20px',
+              paddingBottom: '40px',
+              maxHeight: '80vh',
+              overflowY: 'auto',
+              zIndex: 2000,
+              boxShadow: '0 -8px 32px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.1)',
+              border: '1px solid rgba(255,255,255,0.15)',
+              borderBottom: 'none'
+            }}
+          >
+            {/* Handle */}
+            <div style={{
+              width: '40px',
+              height: '4px',
+              backgroundColor: 'rgba(255,255,255,0.3)',
+              borderRadius: '2px',
+              margin: '0 auto 20px auto'
+            }} />
+            
+            {/* Título */}
+            <div style={{
+              textAlign: 'center',
+              fontSize: '18px',
+              fontWeight: 'bold',
+              color: '#ffffff',
+              marginBottom: '20px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '8px'
+            }}>
+              <span style={{ fontSize: '20px' }}>⚙️</span>
+              <span>{t('menu')}</span>
+            </div>
+            
+            {/* Separador decorativo */}
+            <div style={{
+              height: '1px',
+              background: 'linear-gradient(90deg, transparent, rgba(76, 175, 80, 0.5), transparent)',
+              margin: '0 0 20px 0'
+            }} />
+            
+            {/* Opciones del menú */}
+            <div style={{ marginBottom: '20px' }}>
+              <motion.button
+                whileHover={{ backgroundColor: 'rgba(76, 175, 80, 0.2)' }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => {
+                  setMostrarMenu(false);
+                  soundManager.playNuevaBaraja();
+                  reiniciarJuegoCompleto();
+                }}
+                style={{
+                  width: '100%',
+                  padding: '16px 20px',
+                  fontSize: '16px',
+                  backgroundColor: 'rgba(76, 175, 80, 0.1)',
+                  color: '#ffffff',
+                  border: '1px solid rgba(76, 175, 80, 0.3)',
+                  borderRadius: '12px',
+                  cursor: 'pointer',
+                  textAlign: 'left',
+                  transition: 'all 0.3s ease',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '12px',
+                  fontWeight: '500',
+                  marginBottom: '12px'
+                }}
+              >
+                <span style={{ fontSize: '20px' }}>🔄</span>
+                <span>{t('reiniciarJuego')}</span>
+              </motion.button>
+              
+              <motion.button
+                whileHover={{ backgroundColor: 'rgba(33, 150, 243, 0.2)' }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => {
+                  setMostrarMenu(false);
+                  window.open('https://play.google.com/store/apps/details?id=com.ursolgleb.blackjacknoactivity', '_blank');
+                }}
+                style={{
+                  width: '100%',
+                  padding: '16px 20px',
+                  fontSize: '16px',
+                  backgroundColor: 'rgba(33, 150, 243, 0.1)',
+                  color: '#ffffff',
+                  border: '1px solid rgba(33, 150, 243, 0.3)',
+                  borderRadius: '12px',
+                  cursor: 'pointer',
+                  textAlign: 'left',
+                  transition: 'all 0.3s ease',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '12px',
+                  fontWeight: '500'
+                }}
+              >
+                <span style={{ fontSize: '20px' }}>📱</span>
+                <span>{t('cargarAppPlayStore')}</span>
+              </motion.button>
+            </div>
+            
+            {/* Separador entre secciones */}
+            <div style={{
+              height: '1px',
+              background: 'rgba(255,255,255,0.1)',
+              margin: '20px 0'
+            }} />
+            
+            {/* Selector de idioma */}
+            <div style={{
+              textAlign: 'center',
+              fontSize: '16px',
+              color: 'rgba(255,255,255,0.8)',
+              fontWeight: '600',
+              marginBottom: '16px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '8px'
+            }}>
+              <span style={{ fontSize: '18px' }}>🌍</span>
+              <span>Language / Idioma</span>
+            </div>
+            
+            {/* Lista de idiomas */}
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(2, 1fr)',
+              gap: '8px',
+              maxHeight: '200px',
+              overflowY: 'auto'
+            }}>
+              {availableLanguages.map(lang => (
+                <motion.button
+                  key={lang.code}
+                  whileHover={{ 
+                    backgroundColor: currentLanguage === lang.code ? 'rgba(76, 175, 80, 0.3)' : 'rgba(255,255,255,0.1)'
+                  }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => {
+                    setMostrarMenu(false);
+                    changeLanguage(lang.code);
+                  }}
+                  disabled={isLoading}
+                  style={{
+                    padding: '12px 16px',
+                    fontSize: '14px',
+                    backgroundColor: currentLanguage === lang.code ? 'rgba(76, 175, 80, 0.2)' : 'rgba(255,255,255,0.05)',
+                    color: currentLanguage === lang.code ? '#4CAF50' : '#ffffff',
+                    border: currentLanguage === lang.code ? '1px solid rgba(76, 175, 80, 0.5)' : '1px solid rgba(255,255,255,0.1)',
+                    borderRadius: '10px',
+                    cursor: isLoading ? 'not-allowed' : 'pointer',
+                    textAlign: 'center',
+                    transition: 'all 0.3s ease',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '6px',
+                    fontWeight: '500',
+                    opacity: isLoading ? 0.6 : 1,
+                    flexDirection: 'column',
+                    minHeight: '60px'
+                  }}
+                >
+                  <span style={{ fontSize: '20px' }}>{lang.flag}</span>
+                  <span style={{ fontSize: '12px' }}>{lang.name}</span>
+                  {currentLanguage === lang.code && (
+                    <span style={{ fontSize: '10px', color: '#4CAF50' }}>✓</span>
+                  )}
+                </motion.button>
+              ))}
+            </div>
+          </motion.div>
+        </>
+      )}
+
+      {/* Bottom Sheet para Móviles Landscape */}
+      {mostrarMenu && isLandscape && (
+        <>
+          {/* Overlay */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setMostrarMenu(false)}
+            style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundColor: 'rgba(0, 0, 0, 0.5)',
+              zIndex: 1999,
+              backdropFilter: 'blur(2px)'
+            }}
+          />
+          
+          {/* Bottom Sheet Landscape */}
+          <motion.div
+            initial={{ y: '100%' }}
+            animate={{ y: '15vh' }}
+            exit={{ y: '100%' }}
+            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+            style={{
+              position: 'fixed',
+              bottom: 0,
+              left: 0,
+              right: 0,
+              backgroundColor: 'rgba(20, 20, 20, 0.98)',
+              backdropFilter: 'blur(20px)',
+              borderTopLeftRadius: '16px',
+              borderTopRightRadius: '16px',
+              padding: '12px 16px',
+              paddingBottom: '20px',
+              height: '85vh',
+              overflowY: 'auto',
+              zIndex: 2000,
+              boxShadow: '0 -8px 32px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.1)',
+              border: '1px solid rgba(255,255,255,0.15)',
+              borderBottom: 'none'
+            }}
+          >
+            {/* Handle compacto */}
+            <div style={{
+              width: '30px',
+              height: '3px',
+              backgroundColor: 'rgba(255,255,255,0.3)',
+              borderRadius: '2px',
+              margin: '0 auto 12px auto'
+            }} />
+            
+            {/* Contenido en layout horizontal */}
+            <div style={{
+              display: 'flex',
+              gap: '12px',
+              alignItems: 'flex-start'
+            }}>
+              {/* Opciones principales */}
+              <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '8px',
+                minWidth: '140px'
+              }}>
+                <motion.button
+                  whileHover={{ backgroundColor: 'rgba(76, 175, 80, 0.2)' }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={() => {
+                    setMostrarMenu(false);
+                    soundManager.playNuevaBaraja();
+                    reiniciarJuegoCompleto();
+                  }}
+                  style={{
+                    padding: '10px 12px',
+                    fontSize: '13px',
+                    backgroundColor: 'rgba(76, 175, 80, 0.1)',
+                    color: '#ffffff',
+                    border: '1px solid rgba(76, 175, 80, 0.3)',
+                    borderRadius: '8px',
+                    cursor: 'pointer',
+                    textAlign: 'left',
+                    transition: 'all 0.3s ease',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    fontWeight: '500'
+                  }}
+                >
+                  <span style={{ fontSize: '14px' }}>🔄</span>
+                  <span>{t('reiniciarJuego')}</span>
+                </motion.button>
+                
+                <motion.button
+                  whileHover={{ backgroundColor: 'rgba(33, 150, 243, 0.2)' }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={() => {
+                    setMostrarMenu(false);
+                    window.open('https://play.google.com/store/apps/details?id=com.ursolgleb.blackjacknoactivity', '_blank');
+                  }}
+                  style={{
+                    padding: '10px 12px',
+                    fontSize: '13px',
+                    backgroundColor: 'rgba(33, 150, 243, 0.1)',
+                    color: '#ffffff',
+                    border: '1px solid rgba(33, 150, 243, 0.3)',
+                    borderRadius: '8px',
+                    cursor: 'pointer',
+                    textAlign: 'left',
+                    transition: 'all 0.3s ease',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    fontWeight: '500'
+                  }}
+                >
+                  <span style={{ fontSize: '14px' }}>📱</span>
+                  <span>{t('cargarAppPlayStore')}</span>
+                </motion.button>
+              </div>
+              
+              {/* Separador vertical */}
+              <div style={{
+                width: '1px',
+                background: 'rgba(255,255,255,0.1)',
+                margin: '0 8px'
+              }} />
+              
+              {/* Selector de idioma compacto */}
+              <div style={{ flex: 1 }}>
+                <div style={{
+                  fontSize: '12px',
+                  color: 'rgba(255,255,255,0.8)',
+                  fontWeight: '600',
+                  marginBottom: '8px',
+                  textAlign: 'center',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '4px'
+                }}>
+                  <span style={{ fontSize: '14px' }}>🌍</span>
+                  <span>Language</span>
+                </div>
+                
+                {/* Grid de idiomas compacto */}
+                <div style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(3, 1fr)',
+                  gap: '4px',
+                  maxHeight: '240px',
+                  overflowY: 'auto'
+                }}>
+                  {availableLanguages.map(lang => (
+                    <motion.button
+                      key={lang.code}
+                      whileHover={{ 
+                        backgroundColor: currentLanguage === lang.code ? 'rgba(76, 175, 80, 0.3)' : 'rgba(255,255,255,0.1)'
+                      }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={() => {
+                        setMostrarMenu(false);
+                        changeLanguage(lang.code);
+                      }}
+                      disabled={isLoading}
+                      style={{
+                        padding: '6px 8px',
+                        fontSize: '10px',
+                        backgroundColor: currentLanguage === lang.code ? 'rgba(76, 175, 80, 0.2)' : 'rgba(255,255,255,0.05)',
+                        color: currentLanguage === lang.code ? '#4CAF50' : '#ffffff',
+                        border: currentLanguage === lang.code ? '1px solid rgba(76, 175, 80, 0.5)' : '1px solid rgba(255,255,255,0.1)',
+                        borderRadius: '6px',
+                        cursor: isLoading ? 'not-allowed' : 'pointer',
+                        textAlign: 'center',
+                        transition: 'all 0.3s ease',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: '4px',
+                        fontWeight: '500',
+                        opacity: isLoading ? 0.6 : 1,
+                        flexDirection: 'column',
+                        minHeight: '40px'
+                      }}
+                    >
+                      <span style={{ fontSize: '12px' }}>{lang.flag}</span>
+                      <span style={{ fontSize: '8px' }}>{lang.name}</span>
+                      {currentLanguage === lang.code && (
+                        <span style={{ fontSize: '8px', color: '#4CAF50' }}>✓</span>
+                      )}
+                    </motion.button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </>
+      )}
 
       {/* Baraja */}
       <motion.div
@@ -270,7 +910,7 @@ const MesaJuego = () => {
         opacity: 0.7,
         zIndex: 9999
       }}>
-        Apuesta: min:$100, max:$2000
+        {t('infoApuesta')}
       </div>
 
       {/* Fichas del crupier */}
@@ -279,8 +919,8 @@ const MesaJuego = () => {
         top: '0px',
         left: '50%',
         transform: 'translateX(-50%)',
-        width: window.innerWidth < 700 ? '200px' : '300px',
-        height: window.innerWidth < 700 ? '100px' : '150px',
+        width: isLandscape ? '180px' : (isMobile ? '200px' : '300px'),
+        height: isLandscape ? '90px' : (isMobile ? '100px' : '150px'),
         backgroundImage: 'url(/blackjack-web/images/fichas_crupier.png)',
         backgroundSize: 'contain',
         backgroundRepeat: 'no-repeat',
@@ -314,6 +954,7 @@ const MesaJuego = () => {
         fichas={fichasEnApuesta} 
         enApuesta={true}
         animarGanancia={false}
+        animarPerdida={animarPerdida}
       />
 
       {/* Panel de fichas del crupier (cuando ganas) */}
@@ -328,7 +969,7 @@ const MesaJuego = () => {
       {/* Imagen de apuesta */}
       <div style={{
         position: 'absolute',
-        bottom: '250px',
+        bottom: isLandscape ? '200px' : '250px',
         left: '50%',
         transform: 'translateX(-50%)',
         width: `${anchoCarta * 0.8}px`,
@@ -402,8 +1043,8 @@ const MesaJuego = () => {
             maxHeight: '90vh'
           }}
         >
-          <h2>¡Game Over!</h2>
-          <p>No tienes suficiente dinero para continuar</p>
+          <h2>{t('gameOver')}</h2>
+          <p>{t('sinDineroSuficiente')}</p>
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
@@ -423,7 +1064,7 @@ const MesaJuego = () => {
               cursor: 'pointer'
             }}
           >
-            Reiniciar
+{t('reiniciar')}
           </motion.button>
         </motion.div>
       )}

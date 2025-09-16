@@ -1,4 +1,5 @@
 import { DEFAULT_BALANCE } from '../utils/constants';
+import { t } from '../utils/translations';
 
 export class Jugador {
   constructor(nombre, isCrupier = false) {
@@ -22,7 +23,7 @@ export class Jugador {
       return "No hay suficiente dinero";
     }
     if ((this.apuestoJugador + apuestoQuierePonel) > this.APUESTO_MAX) {
-      return `Apuesta máxima $${this.APUESTO_MAX}`;
+      return `${t('apuestaMaxima')} $${this.APUESTO_MAX}`;
     }
     this.balanceJugador -= apuestoQuierePonel;
     this.apuestoJugador += apuestoQuierePonel;

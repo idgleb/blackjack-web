@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useLanguage } from '../hooks/useLanguage';
 
 const InfoJuego = ({ 
   balance, 
@@ -10,6 +11,7 @@ const InfoJuego = ({
   mostrarPuntosJugador,
   mostrarPuntosCrupier 
 }) => {
+  const { t } = useLanguage();
   const infoStyle = {
     color: 'white',
     fontSize: '18px',
@@ -28,16 +30,13 @@ const InfoJuego = ({
         style={{
           ...infoStyle,
           position: 'absolute',
-          bottom: window.innerWidth < 700 
-            ? 'max(100px, env(safe-area-inset-bottom, 20px) + 80px)' 
-            : 'max(20px, env(safe-area-inset-bottom, 20px) + 20px)',
-          left: window.innerWidth < 700 ? '50%' : '20px',
-          transform: window.innerWidth < 700 ? 'translateX(-50%)' : 'none',
-          fontSize: window.innerWidth < 700 ? '12px' : '16px',
-          padding: window.innerWidth < 700 ? '8px 16px' : '10px 20px'
+          bottom: '70px',
+          left: '10px',
+          fontSize: (window.innerWidth < 700 || window.innerHeight < 700) ? '12px' : '16px',
+          padding: (window.innerWidth < 700 || window.innerHeight < 700) ? '8px 16px' : '10px 20px'
         }}
       >
-        Balance: ${balance.toFixed(2)}
+{t('balance')}: ${balance.toFixed(2)}
       </motion.div>
 
       {/* Apuesta */}
@@ -45,7 +44,7 @@ const InfoJuego = ({
         style={{
           ...infoStyle,
           position: 'absolute',
-          bottom: '200px',
+          bottom: window.innerWidth > window.innerHeight && (window.innerWidth < 700 || window.innerHeight < 700) ? '100px' : '200px',
           left: '50%',
           transform: 'translateX(-50%)',
           fontSize: window.innerWidth < 700 ? '14px' : '18px',
@@ -60,13 +59,13 @@ const InfoJuego = ({
         style={{
           ...infoStyle,
           position: 'absolute',
-          top: '20px',
+          top: window.innerWidth < 700 ? '60px' : '20px',
           right: '20px',
           fontSize: '14px',
           textAlign: 'center'
         }}
       >
-        {cartasRestantes} cartas<br/>en baraja
+{t('cartasRestantes')} {cartasRestantes}
       </motion.div>
 
       {/* Puntos del jugador */}

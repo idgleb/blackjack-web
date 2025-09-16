@@ -3,6 +3,7 @@ import { BarajaDeCartas } from '../models/BarajaDeCartas';
 import { Jugador } from '../models/Jugador';
 import { Carta } from '../models/Carta';
 import soundManager from '../utils/soundManager';
+import { t } from '../utils/translations';
 
 // Función para cargar estado desde localStorage
 const cargarEstadoInicial = () => {
@@ -281,7 +282,7 @@ const useGameStore = create((set, get) => ({
       // Verificar si se pasó de 21
       if (jugador1.sumaPuntos() > 21) {
         // No cambiar isMas a false aquí - mantenerlo hasta que finalizarJuego lo maneje
-        get().finalizarJuego(0, `Pierdes -$${jugador1.apuestoJugador}`);
+        get().finalizarJuego(0, `${t('pierdes')} -$${jugador1.apuestoJugador}`);
         return false;
       } else if (jugador1.sumaPuntos() === 21) {
         set({ isMas: false });
@@ -328,7 +329,7 @@ const useGameStore = create((set, get) => ({
         
         if (jugador1.sumaPuntos() > 21) {
           // No cambiar isDoblar a false aquí - mantenerlo hasta que finalizarJuego lo maneje
-          get().finalizarJuego(0, `Pierdes -$${jugador1.apuestoJugador}`);
+          get().finalizarJuego(0, `${t('pierdes')} -$${jugador1.apuestoJugador}`);
         } else {
           set({ isDoblar: false });
           get().turnoCrupier();
@@ -388,13 +389,13 @@ const useGameStore = create((set, get) => ({
     const puntosJugador = jugador1.sumaPuntos();
     
     if (puntosCrupier > 21) {
-      get().finalizarJuego(2, `Ganas +$${jugador1.apuestoJugador * 2}`);
+      get().finalizarJuego(2, `${t('ganas')} +$${jugador1.apuestoJugador * 2}`);
     } else if (puntosCrupier > puntosJugador) {
-      get().finalizarJuego(0, `Pierdes -$${jugador1.apuestoJugador}`);
+      get().finalizarJuego(0, `${t('pierdes')} -$${jugador1.apuestoJugador}`);
     } else if (puntosCrupier === puntosJugador) {
-      get().finalizarJuego(1, "Empate");
+      get().finalizarJuego(1, t('empate'));
     } else {
-      get().finalizarJuego(2, `Ganas +$${jugador1.apuestoJugador * 2}`);
+      get().finalizarJuego(2, `${t('ganas')} +$${jugador1.apuestoJugador * 2}`);
     }
   },
   
@@ -403,10 +404,10 @@ const useGameStore = create((set, get) => ({
     const { jugador1, crupier } = get();
     
     if (jugador1.tieneBlackjack() && crupier.tieneBlackjack()) {
-      get().finalizarJuego(1, "Empate");
+      get().finalizarJuego(1, t('empate'));
       return true;
     } else if (jugador1.tieneBlackjack()) {
-      get().finalizarJuego(2.5, `BlackJack! Ganas +$${jugador1.apuestoJugador * 2.5}`);
+      get().finalizarJuego(2.5, `${t('blackjack')} ${t('ganas')} +$${jugador1.apuestoJugador * 2.5}`);
       return true;
     }
     return false;
@@ -453,7 +454,7 @@ const useGameStore = create((set, get) => ({
       const { jugador1 } = get();
       if (jugador1.balanceJugador < jugador1.APUESTO_MIN) {
         set({ 
-          mensaje: "¡Te quedaste sin dinero!", 
+          mensaje: t('teQuedasteSinDinero'), 
           colorMensaje: "#710001" // colorPierdes
         });
       }
@@ -473,7 +474,7 @@ const useGameStore = create((set, get) => ({
       baraja.reiniciar();
       if (!soundManager.initialized) soundManager.init();
       soundManager.playNuevaBaraja();
-      set({ mensaje: "Nueva baraja!", colorMensaje: "#431500" }); // colorComun
+      set({ mensaje: t('nuevaBaraja'), colorMensaje: "#431500" }); // colorComun
       get().guardarEstado(); // Guardar después de reiniciar la baraja
     }
     
@@ -530,7 +531,7 @@ const useGameStore = create((set, get) => ({
       isRepartirPrincipal: false,
       isDoblar: false,
       isJuegoActivo: true,
-      mensaje: "¡Juego reiniciado! Balance: $3000",
+      mensaje: `${t('reiniciarJuego')}! ${t('balance')}: $3000`,
       colorMensaje: "#007100" // colorGanas
     });
     get().guardarEstado();
@@ -576,7 +577,7 @@ const useGameStore = create((set, get) => ({
       isRepartirPrincipal: false,
       isDoblar: false,
       isJuegoActivo: true,
-      mensaje: "¡Juego reiniciado! Balance: $3000",
+      mensaje: `${t('reiniciarJuego')}! ${t('balance')}: $3000`,
       colorMensaje: "#007100" // colorGanas
     });
     get().guardarEstado();

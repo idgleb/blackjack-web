@@ -55,7 +55,7 @@ const Ficha = ({ valor, tipo, index, enApuesta = true }) => {
         backgroundPosition: 'center',
         borderRadius: '50%',
         boxShadow: '0 2px 4px rgba(0,0,0,0.3)',
-        zIndex: 50 + index
+        zIndex: 1000 + index
       }}
     >
       <span style={{ display: 'none' }}>{valor}</span>

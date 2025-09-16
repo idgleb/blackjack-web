@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { useLanguage } from '../hooks/useLanguage';
 
 const BotonesJuego = ({ 
   onRepartir, 
@@ -14,10 +15,29 @@ const BotonesJuego = ({
   mostrarSacarFichas,
   disabled
 }) => {
-  const isMobile = window.innerWidth < 700;
+  const { t } = useLanguage();
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 700 || window.innerHeight < 700);
+  const [isLandscape, setIsLandscape] = useState(window.innerWidth > window.innerHeight && (window.innerWidth < 700 || window.innerHeight < 700));
+
+  useEffect(() => {
+    const updateDimensions = () => {
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+      const isCurrentlyMobile = width < 700 || height < 700;
+      const isCurrentlyLandscape = width > height && (width < 700 || height < 700);
+      
+      
+      setIsMobile(isCurrentlyMobile);
+      setIsLandscape(isCurrentlyLandscape);
+    };
+
+    updateDimensions(); // Llamar inmediatamente
+    window.addEventListener('resize', updateDimensions);
+    return () => window.removeEventListener('resize', updateDimensions);
+  }, []);
   
   const buttonStyle = {
-    padding: isMobile ? '6px 10px' : '10px 20px',
+    padding: isMobile ? '8px 18px' : '10px 20px',
     fontSize: isMobile ? '10px' : '16px',
     fontWeight: 'bold',
     border: 'none',
@@ -26,20 +46,26 @@ const BotonesJuego = ({
     boxShadow: '0 4px 8px rgba(0,0,0,0.2)',
     background: 'linear-gradient(to bottom, #4CAF50, #45a049)',
     color: 'white',
-    minWidth: isMobile ? '80px' : '100px'
+    minWidth: isMobile ? '80px' : '100px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    textAlign: 'center'
   };
 
-  // Estilo específico para botones de acción (MÁS, PARAR, DOBLAR) - más grandes
+  // Estilo específico para botones de acción (MÁS, PARAR, DOBLAR) - más grandes en landscape
   const actionButtonStyle = {
-    padding: isMobile ? '10px 16px' : '12px 24px',
-    fontSize: isMobile ? '14px' : '18px',
+    padding: isLandscape ? '8px 12px' : (isMobile ? '8px 12px' : '12px 24px'),
+    fontSize: isLandscape ? '12px' : (isMobile ? '10px' : '18px'),
     fontWeight: 'bold',
     border: 'none',
-    borderRadius: '8px',
+    borderRadius: isLandscape ? '5px' : (isMobile ? '5px' : '8px'),
     cursor: disabled ? 'not-allowed' : 'pointer',
     boxShadow: '0 4px 8px rgba(0,0,0,0.3)',
     color: 'white',
-    minWidth: isMobile ? '90px' : '120px'
+    minWidth: isLandscape ? '60px' : (isMobile ? 'auto' : '120px'),
+    width: isMobile && !isLandscape ? 'auto' : undefined,
+    whiteSpace: 'nowrap'
   };
 
   return (
@@ -66,7 +92,7 @@ const BotonesJuego = ({
             disabled={disabled}
             style={buttonStyle}
           >
-            REPARTIR
+🎯 {t('repartir')}
           </motion.button>
         )}
 
@@ -78,7 +104,7 @@ const BotonesJuego = ({
               onClick={onSacarUna}
               style={{...buttonStyle, background: 'linear-gradient(to bottom, #607D8B, #455A64)'}}
             >
-              SACAR UNA
+🪙 {t('quitarFicha')}
             </motion.button>
             <motion.button
               whileHover={{ scale: 1.05 }}
@@ -86,7 +112,7 @@ const BotonesJuego = ({
               onClick={onSacarTodas}
               style={{...buttonStyle, background: 'linear-gradient(to bottom, #795548, #5D4037)'}}
             >
-              SACAR TODAS
+🪙 {t('sacarTodas')}
             </motion.button>
           </>
         )}
@@ -100,7 +126,7 @@ const BotonesJuego = ({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        gap: '10px',
+        gap: isLandscape ? '6px' : (isMobile ? '12px' : '10px'),
         width: 'auto',
         transform: 'translateX(-50%)'
       }}>
@@ -113,7 +139,7 @@ const BotonesJuego = ({
               disabled={disabled}
               style={{...actionButtonStyle, background: 'linear-gradient(to bottom, #2196F3, #1976D2)'}}
             >
-              MÁS
+{isMobile ? '🃏' : '🃏'} {t('sacarUna')}
             </motion.button>
             <motion.button
               whileHover={{ scale: 1.05 }}
@@ -122,7 +148,7 @@ const BotonesJuego = ({
               disabled={disabled}
               style={{...actionButtonStyle, background: 'linear-gradient(to bottom, #FF9800, #F57C00)'}}
             >
-              PARAR
+{isMobile ? '✋' : '✋'} {t('parar')}
             </motion.button>
           </>
         )}
@@ -135,7 +161,7 @@ const BotonesJuego = ({
             disabled={disabled}
             style={{...actionButtonStyle, background: 'linear-gradient(to bottom, #9C27B0, #7B1FA2)'}}
           >
-            DOBLAR
+{isMobile ? '⚡' : '⚡'} {t('doblar')}
           </motion.button>
         )}
       </div>
