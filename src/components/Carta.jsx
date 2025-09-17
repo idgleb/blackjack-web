@@ -29,8 +29,8 @@ const Carta = ({ carta, index, jugador, anchoCarta = 120 }) => {
     <motion.div
       className="carta"
       initial={{ 
-        x: window.innerWidth / 2 + 180,
-        y: -140,
+        x: window.innerWidth - 100,
+        y: 50,
         rotate: -70,
         scale: 1
       }}

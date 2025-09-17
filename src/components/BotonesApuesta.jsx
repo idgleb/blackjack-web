@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import soundManager from '../utils/soundManager';
 
-const BotonesApuesta = ({ onApostar, visible = true }) => {
+const BotonesApuesta = ({ onApostar, visible = true, onChipAnimation }) => {
   const fichas = [
     { valor: 10, imagen: '/blackjack-web/images/fichas/f10.png' },
     { valor: 25, imagen: '/blackjack-web/images/fichas/f25.png' },
@@ -11,8 +11,17 @@ const BotonesApuesta = ({ onApostar, visible = true }) => {
     { valor: 500, imagen: '/blackjack-web/images/fichas/f500.png' }
   ];
 
-  const handleClick = (valor) => {
-    soundManager.playApostar();
+  const handleClick = (valor, event) => {
+    // Obtener coordenadas exactas del centro del botón presionado
+    const buttonRect = event.currentTarget.getBoundingClientRect();
+    const buttonX = buttonRect.left + buttonRect.width / 2;
+    const buttonY = buttonRect.top + buttonRect.height / 2;
+    
+    // Llamar a la animación de ficha con coordenadas precisas
+    if (onChipAnimation) {
+      onChipAnimation(valor, buttonX, buttonY);
+    }
+    
     onApostar(valor);
   };
 
@@ -39,9 +48,10 @@ const BotonesApuesta = ({ onApostar, visible = true }) => {
       {fichas.map(ficha => (
         <motion.button
           key={ficha.valor}
+          data-chip-value={ficha.valor}
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.95 }}
-          onClick={() => handleClick(ficha.valor)}
+          onClick={(event) => handleClick(ficha.valor, event)}
           style={{
             width: '60px',
             height: '60px',

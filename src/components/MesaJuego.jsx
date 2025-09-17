@@ -42,8 +42,10 @@ const MesaJuego = () => {
   const [fichasCrupier, setFichasCrupier] = useState([]);
   const [mostrarGameOver, setMostrarGameOver] = useState(false);
   const [mostrarMenu, setMostrarMenu] = useState(false);
+  const [chipAnimations, setChipAnimations] = useState([]);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 700);
   const [isLandscape, setIsLandscape] = useState(window.innerWidth > window.innerHeight && window.innerWidth < 700);
+  const [isTablet, setIsTablet] = useState(window.innerWidth >= 700 && window.innerWidth <= 1024);
   
   // Hook de idioma
   const { currentLanguage, changeLanguage, t, availableLanguages, isLoading } = useLanguage();
@@ -56,9 +58,11 @@ const MesaJuego = () => {
         const height = window.innerHeight;
         const isCurrentlyMobile = width < 700 || height < 700;
         const isCurrentlyLandscape = width > height && (width < 700 || height < 700);
+        const isCurrentlyTablet = width >= 700 && width <= 1024;
         
         setIsMobile(isCurrentlyMobile);
         setIsLandscape(isCurrentlyLandscape);
+        setIsTablet(isCurrentlyTablet);
         
         if (window.innerWidth <= window.innerHeight) {
           setAnchoCarta(window.innerWidth / 6);
@@ -176,6 +180,32 @@ const MesaJuego = () => {
     }
   };
 
+  const handleChipAnimation = (valor, fromX, fromY) => {
+    // Crear un ID único para esta animación
+    const animationId = `${valor}-${Date.now()}-${Math.random()}`;
+    
+    // Calcular coordenadas relativas al panel de fichas para consistencia
+    const panelElement = document.querySelector('.panel-fichas');
+    const panelRect = panelElement ? panelElement.getBoundingClientRect() : { left: window.innerWidth / 2, top: window.innerHeight - 200 };
+    
+    // Convertir coordenadas globales del botón a coordenadas relativas del panel
+    const relativeFromX = fromX - panelRect.left;
+    const relativeFromY = fromY - panelRect.top;
+    
+    // Agregar a la cola de animaciones
+    setChipAnimations(prev => [...prev, {
+      valor,
+      fromX: relativeFromX, // Coordenadas relativas al panel
+      fromY: relativeFromY, // Coordenadas relativas al panel
+      id: animationId
+    }]);
+    
+    // Limpiar la animación después de un tiempo
+    setTimeout(() => {
+      setChipAnimations(prev => prev.filter(anim => anim.id !== animationId));
+    }, 1000);
+  };
+
   const handleRepartir = async () => {
     if (!jugador1 || jugador1.apuestoJugador < jugador1.APUESTO_MIN) {
       soundManager.playPop();
@@ -186,13 +216,113 @@ const MesaJuego = () => {
   };
 
   const handleSacarUna = () => {
-    soundManager.playSacarFichas();
-    quitarUltimaFicha();
+    // Obtener la última ficha antes de quitarla
+    const ultimaFicha = fichasEnApuesta[fichasEnApuesta.length - 1];
+    
+    if (ultimaFicha) {
+      // Obtener coordenadas exactas del centro del botón correspondiente
+      const buttonElement = document.querySelector(`[data-chip-value="${ultimaFicha.cantidad}"]`);
+      if (buttonElement) {
+        const buttonRect = buttonElement.getBoundingClientRect();
+        const buttonX = buttonRect.left + buttonRect.width / 2;
+        const buttonY = buttonRect.top + buttonRect.height / 2;
+        
+        // Crear animación de ficha volando de vuelta al botón
+        const animationId = `remove-${ultimaFicha.cantidad}-${Date.now()}-${Math.random()}`;
+        
+        // Calcular coordenadas relativas al panel de fichas
+        const panelElement = document.querySelector('.panel-fichas');
+        const panelRect = panelElement ? panelElement.getBoundingClientRect() : { left: window.innerWidth / 2, top: window.innerHeight - 200 };
+        
+        // Convertir coordenadas globales del botón a coordenadas relativas del panel
+        const relativeButtonX = buttonX - panelRect.left;
+        const relativeButtonY = buttonY - panelRect.top;
+        
+        setChipAnimations(prev => [...prev, {
+          valor: ultimaFicha.cantidad,
+          fromX: 0, // Desde el centro del panel (coordenadas relativas)
+          fromY: 0, // Desde el centro del panel (coordenadas relativas)
+          toX: relativeButtonX, // Hacia el botón (coordenadas relativas)
+          toY: relativeButtonY, // Hacia el botón (coordenadas relativas)
+          id: animationId,
+          isRemove: true,
+          targetIndex: fichasEnApuesta.length - 1, // Especificar el índice exacto
+          buttonX: relativeButtonX, // Guardar coordenadas relativas del botón
+          buttonY: relativeButtonY
+        }]);
+        
+        // Quitar la ficha después de un pequeño delay para la animación
+        setTimeout(() => {
+          soundManager.playSacarFichas();
+          quitarUltimaFicha();
+        }, 100);
+        
+        // Limpiar la animación después de que termine
+        setTimeout(() => {
+          setChipAnimations(prev => prev.filter(anim => anim.id !== animationId));
+        }, 700);
+      } else {
+        // Si no se encuentra el botón, quitar inmediatamente
+        soundManager.playSacarFichas();
+        quitarUltimaFicha();
+      }
+    }
   };
 
   const handleSacarTodas = () => {
-    soundManager.playSacarFichas();
-    quitarTodasLasFichas();
+    // Animar TODAS las fichas volando de vuelta a sus botones correspondientes
+    const fichasParaAnimar = [...fichasEnApuesta];
+    
+    // Crear todas las animaciones al mismo tiempo
+    const nuevasAnimaciones = [];
+    
+    fichasParaAnimar.forEach((ficha, index) => {
+      // Obtener coordenadas exactas del centro del botón correspondiente
+      const buttonElement = document.querySelector(`[data-chip-value="${ficha.cantidad}"]`);
+      if (buttonElement) {
+        const buttonRect = buttonElement.getBoundingClientRect();
+        const buttonX = buttonRect.left + buttonRect.width / 2;
+        const buttonY = buttonRect.top + buttonRect.height / 2;
+        
+        // Calcular coordenadas relativas al panel de fichas
+        const panelElement = document.querySelector('.panel-fichas');
+        const panelRect = panelElement ? panelElement.getBoundingClientRect() : { left: window.innerWidth / 2, top: window.innerHeight - 200 };
+        
+        // Convertir coordenadas globales del botón a coordenadas relativas del panel
+        const relativeButtonX = buttonX - panelRect.left;
+        const relativeButtonY = buttonY - panelRect.top;
+        
+        // Crear animación
+        const animationId = `remove-all-${ficha.cantidad}-${index}-${Date.now()}-${Math.random()}`;
+        
+        nuevasAnimaciones.push({
+          valor: ficha.cantidad,
+          fromX: 0, // Desde el centro del panel (coordenadas relativas)
+          fromY: 0, // Desde el centro del panel (coordenadas relativas)
+          toX: relativeButtonX, // Hacia el botón (coordenadas relativas)
+          toY: relativeButtonY, // Hacia el botón (coordenadas relativas)
+          id: animationId,
+          isRemove: true,
+          targetIndex: index, // Índice específico de cada ficha
+          buttonX: relativeButtonX, // Guardar coordenadas relativas del botón
+          buttonY: relativeButtonY
+        });
+      }
+    });
+    
+    // Agregar todas las animaciones al mismo tiempo
+    setChipAnimations(prev => [...prev, ...nuevasAnimaciones]);
+    
+    // Limpiar todas las animaciones después de que terminen
+    setTimeout(() => {
+      setChipAnimations(prev => prev.filter(anim => !nuevasAnimaciones.some(nueva => nueva.id === anim.id)));
+    }, 700);
+    
+    // Quitar todas las fichas después de un delay para permitir las animaciones
+    setTimeout(() => {
+      soundManager.playSacarFichas();
+      quitarTodasLasFichas();
+    }, 200);
   };
 
   // Condiciones de visibilidad
@@ -257,12 +387,12 @@ const MesaJuego = () => {
           whileTap={{ scale: 0.95 }}
           onClick={() => setMostrarMenu(!mostrarMenu)}
           style={{
-            padding: isLandscape ? '8px 12px' : (isMobile ? '10px 16px' : '12px 20px'),
-            fontSize: isLandscape ? '12px' : (isMobile ? '12px' : '16px'),
+            padding: isTablet ? '18px 28px' : (isLandscape ? '8px 12px' : (isMobile ? '10px 16px' : '12px 20px')),
+            fontSize: isTablet ? '18px' : (isLandscape ? '12px' : (isMobile ? '12px' : '16px')),
             backgroundColor: 'rgba(76, 175, 80, 0.9)',
             color: 'white',
             border: 'none',
-            borderRadius: isLandscape ? '8px' : (isMobile ? '6px' : '12px'),
+            borderRadius: isTablet ? '12px' : (isLandscape ? '8px' : (isMobile ? '6px' : '12px')),
             cursor: 'pointer',
             fontWeight: 'bold',
             boxShadow: '0 4px 8px rgba(0,0,0,0.3)',
@@ -384,7 +514,7 @@ const MesaJuego = () => {
               fontWeight: '500',
               textAlign: 'center'
             }}>
-              🌍 {t('menu')} / Language
+              🌍 {t('idioma')} / Language
             </div>
             
             {/* Lista de idiomas */}
@@ -865,7 +995,7 @@ const MesaJuego = () => {
         style={{
           position: 'absolute',
           top: '20px',
-          right: '100px',
+          right: '20px',
           width: `${anchoCarta}px`,
           height: `${anchoCarta * 1.46}px`,
           backgroundImage: 'url(/blackjack-web/images/cartas/cartacubierta.png)',
@@ -922,6 +1052,7 @@ const MesaJuego = () => {
         enApuesta={true}
         animarGanancia={false}
         animarPerdida={animarPerdida}
+        chipAnimations={chipAnimations}
       />
 
       {/* Panel de fichas del crupier (cuando ganas) */}
@@ -962,6 +1093,7 @@ const MesaJuego = () => {
       <BotonesApuesta
         onApostar={handleApostar}
         visible={mostrarBotonesApuesta}
+        onChipAnimation={handleChipAnimation}
       />
 
       {/* Botones del juego */}

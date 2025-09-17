@@ -9,7 +9,7 @@ export const translations = {
     sacarUna: "要牌",
     quitarFicha: "移除筹码",
     parar: "停牌",
-    doblar: "加倍下注",
+    doblar: "加倍",
     sacarTodas: "清除全部",
     
     // Mensajes del juego
@@ -28,6 +28,7 @@ export const translations = {
     
     // Menú
     menu: "菜单",
+    idioma: "语言",
     reiniciarJuego: "重新开始游戏",
     cargarAppPlayStore: "从Play Store加载应用",
     
@@ -72,6 +73,7 @@ export const translations = {
     
     // Menú
     menu: "Menú",
+    idioma: "Idioma",
     reiniciarJuego: "Reiniciar Juego",
     cargarAppPlayStore: "Cargar App desde Play Store",
     
@@ -97,7 +99,7 @@ export const translations = {
     sacarUna: "HIT",
     quitarFicha: "REMOVE CHIP",
     parar: "STAND",
-    doblar: "DOUBLE DOWN",
+    doblar: "DOUBLE",
     sacarTodas: "CLEAR ALL",
     
     // Game messages
@@ -116,6 +118,7 @@ export const translations = {
     
     // Menu
     menu: "Menu",
+    idioma: "Language",
     reiniciarJuego: "Restart Game",
     cargarAppPlayStore: "Load App from Play Store",
     
@@ -141,7 +144,7 @@ export const translations = {
     sacarUna: "कार्ड लें",
     quitarFicha: "चिप हटाएं",
     parar: "रुकें",
-    doblar: "दोगुना दांव",
+    doblar: "दोगुना",
     sacarTodas: "सभी हटाएं",
     
     // Mensajes del juego
@@ -160,6 +163,7 @@ export const translations = {
     
     // Menú
     menu: "मेनू",
+    idioma: "भाषा",
     reiniciarJuego: "गेम पुनः आरंभ करें",
     cargarAppPlayStore: "Play Store से ऐप लोड करें",
     
@@ -185,7 +189,7 @@ export const translations = {
     sacarUna: "سحب",
     quitarFicha: "إزالة رقاقة",
     parar: "توقف",
-    doblar: "مضاعفة الرهان",
+    doblar: "مضاعفة",
     sacarTodas: "مسح الكل",
     
     // Mensajes del juego
@@ -204,6 +208,7 @@ export const translations = {
     
     // Menú
     menu: "القائمة",
+    idioma: "اللغة",
     reiniciarJuego: "إعادة تشغيل اللعبة",
     cargarAppPlayStore: "تحميل التطبيق من Play Store",
     
@@ -229,7 +234,7 @@ export const translations = {
     sacarUna: "PEDIR",
     quitarFicha: "REMOVER FICHA",
     parar: "PARAR",
-    doblar: "DOBRAR APOSTA",
+    doblar: "DOBRAR",
     sacarTodas: "LIMPAR TUDO",
     
     // Mensagens do jogo
@@ -248,6 +253,7 @@ export const translations = {
     
     // Menu
     menu: "Menu",
+    idioma: "Idioma",
     reiniciarJuego: "Reiniciar Jogo",
     cargarAppPlayStore: "Carregar App da Play Store",
     
@@ -273,7 +279,7 @@ export const translations = {
     sacarUna: "কার্ড নিন",
     quitarFicha: "চিপ সরান",
     parar: "থামুন",
-    doblar: "দ্বিগুণ বাজি",
+    doblar: "দ্বিগুণ",
     sacarTodas: "সব সরান",
     
     // Mensajes del juego
@@ -292,6 +298,7 @@ export const translations = {
     
     // Menú
     menu: "মেনু",
+    idioma: "ভাষা",
     reiniciarJuego: "গেম পুনরায় শুরু করুন",
     cargarAppPlayStore: "Play Store থেকে অ্যাপ লোড করুন",
     
@@ -317,7 +324,7 @@ export const translations = {
     sacarUna: "ВЗЯТЬ",
     quitarFicha: "УБРАТЬ ФИШКУ",
     parar: "СТОП",
-    doblar: "УДВОИТЬ СТАВКУ",
+    doblar: "УДВОИТЬ",
     sacarTodas: "ОЧИСТИТЬ",
     
     // Mensajes del juego
@@ -336,6 +343,7 @@ export const translations = {
     
     // Menú
     menu: "Меню",
+    idioma: "Язык",
     reiniciarJuego: "Перезапустить игру",
     cargarAppPlayStore: "Загрузить приложение из Play Store",
     
@@ -361,7 +369,7 @@ export const translations = {
     sacarUna: "ヒット",
     quitarFicha: "チップ削除",
     parar: "スタンド",
-    doblar: "ダブルダウン",
+    doblar: "ダブル",
     sacarTodas: "全クリア",
     
     // Mensajes del juego
@@ -380,6 +388,7 @@ export const translations = {
     
     // Menú
     menu: "メニュー",
+    idioma: "言語",
     reiniciarJuego: "ゲームを再開",
     cargarAppPlayStore: "Play Storeからアプリを読み込み",
     
@@ -405,7 +414,7 @@ export const translations = {
     sacarUna: "TIRER",
     quitarFicha: "RETIRER JETON",
     parar: "RESTER",
-    doblar: "DOUBLER LA MISE",
+    doblar: "DOUBLER",
     sacarTodas: "TOUT EFFACER",
     
     // Messages du jeu
@@ -424,6 +433,7 @@ export const translations = {
     
     // Menu
     menu: "Menu",
+    idioma: "Langue",
     reiniciarJuego: "Redémarrer le jeu",
     cargarAppPlayStore: "Charger l'app depuis Play Store",
     

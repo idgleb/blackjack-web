@@ -18,6 +18,7 @@ const BotonesJuego = ({
   const { t } = useLanguage();
   const [isMobile, setIsMobile] = useState(window.innerWidth < 700 || window.innerHeight < 700);
   const [isLandscape, setIsLandscape] = useState(window.innerWidth > window.innerHeight && (window.innerWidth < 700 || window.innerHeight < 700));
+  const [isTablet, setIsTablet] = useState(window.innerWidth >= 700 && window.innerWidth <= 1024);
 
   useEffect(() => {
     const updateDimensions = () => {
@@ -25,10 +26,12 @@ const BotonesJuego = ({
       const height = window.innerHeight;
       const isCurrentlyMobile = width < 700 || height < 700;
       const isCurrentlyLandscape = width > height && (width < 700 || height < 700);
+      const isCurrentlyTablet = width >= 700 && width <= 1024;
       
       
       setIsMobile(isCurrentlyMobile);
       setIsLandscape(isCurrentlyLandscape);
+      setIsTablet(isCurrentlyTablet);
     };
 
     updateDimensions(); // Llamar inmediatamente
@@ -55,15 +58,15 @@ const BotonesJuego = ({
 
   // Estilo específico para botones de acción (MÁS, PARAR, DOBLAR) - más grandes en landscape
   const actionButtonStyle = {
-    padding: isLandscape ? '8px 12px' : (isMobile ? '8px 12px' : '12px 24px'),
-    fontSize: isLandscape ? '12px' : (isMobile ? '10px' : '18px'),
+    padding: isTablet ? '18px 28px' : (isLandscape ? '8px 12px' : (isMobile ? '16px 16px' : '12px 24px')),
+    fontSize: isTablet ? '18px' : (isLandscape ? '12px' : (isMobile ? '14px' : '18px')),
     fontWeight: 'bold',
     border: 'none',
-    borderRadius: isLandscape ? '5px' : (isMobile ? '5px' : '8px'),
+    borderRadius: isTablet ? '10px' : (isLandscape ? '5px' : (isMobile ? '8px' : '8px')),
     cursor: disabled ? 'not-allowed' : 'pointer',
     boxShadow: '0 4px 8px rgba(0,0,0,0.3)',
     color: 'white',
-    minWidth: isLandscape ? '60px' : (isMobile ? 'auto' : '120px'),
+    minWidth: isTablet ? '120px' : (isLandscape ? '60px' : (isMobile ? 'auto' : '120px')),
     width: isMobile && !isLandscape ? 'auto' : undefined,
     whiteSpace: 'nowrap'
   };

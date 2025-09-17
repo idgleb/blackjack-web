@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import soundManager from '../utils/soundManager';
 
-const Ficha = ({ valor, tipo, index, enApuesta = true }) => {
+const Ficha = ({ valor, tipo, index, enApuesta = true, fromX, fromY, animationId, isRemove = false, buttonX, buttonY }) => {
   const fichaImages = {
     10: '/blackjack-web/images/fichas/f10.png',
     25: '/blackjack-web/images/fichas/f25.png',
@@ -34,17 +34,32 @@ const Ficha = ({ valor, tipo, index, enApuesta = true }) => {
   return (
     <motion.div
       className="ficha"
-      initial={{ scale: 0, opacity: 0 }}
+      initial={{ 
+        scale: isRemove ? 1 : 0, 
+        opacity: isRemove ? 1 : 0,
+        x: isRemove ? 0 : (fromX || 0), // Coordenadas ya son relativas al panel
+        y: isRemove ? 0 : (fromY || 0)  // Coordenadas ya son relativas al panel
+      }}
       animate={{ 
-        scale: 1, 
-        opacity: 1,
-        x: posicion.x,
-        y: posicion.y
+        scale: isRemove ? 0 : 1, 
+        opacity: isRemove ? 0 : 1,
+        x: isRemove ? (buttonX || 0) : posicion.x,
+        y: isRemove ? (buttonY || 0) : posicion.y
       }}
       exit={{ scale: 0, opacity: 0 }}
       transition={{ 
-        duration: 0.3,
-        ease: "backOut"
+        duration: 0.6,
+        ease: "easeOut"
+      }}
+      onAnimationComplete={() => {
+        // Reproducir sonido cuando la ficha llega a su destino
+        if (fromX && fromY && animationId && !isRemove) {
+          try {
+            soundManager.playApostar();
+          } catch (error) {
+            console.warn('Error al reproducir sonido de apuesta:', error);
+          }
+        }
       }}
       style={{
         position: 'absolute',
