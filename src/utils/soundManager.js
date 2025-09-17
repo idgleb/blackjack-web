@@ -36,6 +36,9 @@ class SoundManager {
       abrir: new Howl({ src: ['/blackjack-web/sounds/abrir.mp3'] })
     };
 
+    // Configurar eventos para pausar música cuando se sale de la página
+    this.setupVisibilityEvents();
+
     this.initialized = true;
   }
 
@@ -59,6 +62,41 @@ class SoundManager {
     } catch (error) {
       console.warn('Error al pausar música de fondo:', error);
     }
+  }
+
+  // Reanudar música de fondo
+  resumeMusicaFondo() {
+    try {
+      if (this.musicaFondo && !this.musicaFondo.playing()) {
+        this.musicaFondo.play();
+      }
+    } catch (error) {
+      console.warn('Error al reanudar música de fondo:', error);
+    }
+  }
+
+  // Configurar eventos de visibilidad para pausar/reanudar música
+  setupVisibilityEvents() {
+    // Evento cuando la página se oculta (cambio de pestaña, minimizar, etc.)
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        // Pausar música cuando la página se oculta
+        this.pauseMusicaFondo();
+      } else {
+        // Reanudar música cuando la página se vuelve visible
+        this.resumeMusicaFondo();
+      }
+    });
+
+    // Evento cuando la ventana pierde el foco (minimizar, cambiar aplicación)
+    window.addEventListener('blur', () => {
+      this.pauseMusicaFondo();
+    });
+
+    // Evento cuando la ventana recupera el foco
+    window.addEventListener('focus', () => {
+      this.resumeMusicaFondo();
+    });
   }
 
   // Reproducir efecto de sonido
