@@ -17,7 +17,7 @@ const PanelFichas = ({ fichas, enApuesta = true, animarGanancia = false, animarP
           animarPerdida ? {
             // Animación de pérdida desde apuesta: hacia el crupier (arriba y izquierda)
             x: -100,
-            y: [0, -window.innerHeight/2, -window.innerHeight],
+            y: [0, -window.innerHeight/2, -window.innerHeight-2500],
             scale: [1, 0.8, 0.3]
           } : {
             // Resetear posición después de la animación
